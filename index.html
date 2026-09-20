@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Froggy's Interactive Routine</title>
+    <title>Froggy's Cozy Life Tracker</title>
     <style>
         body, html {
             margin: 0;
@@ -15,107 +15,115 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #2b3a4a; /* Safe dark blue night default */
             transition: background 1s ease;
         }
 
-        .cozy-room {
+        .room-container {
             position: relative;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* --- BACKGROUND SCENERY --- */
-        .window {
+        /* --- DETAILED BACKGROUND ROOM SCENERY --- */
+        .window-frame {
             position: absolute;
-            top: 10%;
+            top: 12%;
             right: 15%;
-            width: 160px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 8px solid #5d4037;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            z-index: 1;
-        }
-        .window-line-v { position: absolute; left: 50%; width: 6px; height: 100%; background: #5d4037; }
-        .window-line-h { position: absolute; top: 40%; width: 100%; height: 6px; background: #5d4037; }
-        
-        .star { position: absolute; background: white; border-radius: 50%; display: none; }
-
-        /* --- THE CORE FURNITURE & OBJECTS --- */
-        .bed-frame {
-            position: absolute;
-            bottom: 5%;
-            width: 450px;
+            width: 150px;
             height: 180px;
-            background: #7e57c2;
-            border-radius: 20px 20px 0 0;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            z-index: 2;
+            background: rgba(0, 0, 0, 0.4);
+            border: 8px solid #5d4037;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            border-radius: 4px;
         }
-        .pillow {
+        .window-cross-v { position: absolute; left: 50%; width: 4px; height: 100%; background: #5d4037; transform: translateX(-50%); }
+        .window-cross-h { position: absolute; top: 40%; width: 100%; height: 4px; background: #5d4037; }
+        
+        .sky-star {
             position: absolute;
-            top: -30px;
-            left: 20px;
-            width: 140px;
-            height: 50px;
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.05);
-        }
-        .blanket {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 120px;
-            background: #e57373;
-            border-radius: 10px 10px 0 0;
-            z-index: 5;
+            background: white;
+            border-radius: 50%;
+            width: 4px;
+            height: 4px;
+            opacity: 0.8;
         }
 
-        /* Desktop study setup */
         .study-desk {
             position: absolute;
             bottom: 5%;
-            left: 5%;
-            width: 220px;
+            left: 8%;
+            width: 240px;
             height: 110px;
-            background: #a1887f;
-            border-radius: 10px 10px 0 0;
-            z-index: 2;
+            background: #8d6e63;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             display: none;
         }
-        .laptop {
+        .laptop-device {
             position: absolute;
-            top: -30px;
-            left: 60px;
+            top: -26px;
+            left: 85px;
             width: 70px;
-            height: 30px;
-            background: #b0bec5;
-            border-radius: 5px 5px 0 0;
+            height: 26px;
+            background: #cfd8dc;
+            border-radius: 4px 4px 0 0;
+            border-bottom: 4px solid #90a4ae;
         }
 
-        /* --- FROGGY CHARACTER STRUCTURE --- */
-        @keyframes frogBreathe {
-            0%, 100% { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.03) scaleY(0.97) translateY(2px); }
-        }
-        .frog-wrapper {
+        .bed-setup {
             position: absolute;
-            width: 220px;
+            bottom: 5%;
+            right: 8%;
+            width: 420px;
             height: 160px;
-            animation: frogBreathe 4s ease-in-out infinite;
-            transform-origin: bottom center;
-            transition: all 0.8s ease;
+            background: #7e57c2;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+        }
+        .soft-pillow {
+            position: absolute;
+            top: -24px;
+            left: 20px;
+            width: 130px;
+            height: 45px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .warm-blanket {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 110px;
+            background: #e57373;
+            border-radius: 8px 8px 0 0;
+            box-shadow: inset 0 8px 0 rgba(0,0,0,0.05);
+            z-index: 5;
         }
 
-        /* Positions for different activities */
-        .position-bed { top: -95px; left: 20px; z-index: 3; }
-        .position-desk { bottom: 100px; left: 5%; z-index: 4; }
+        /* --- PERMANENTLY GLUED FROGGY CHARACTER MODEL --- */
+        @keyframes gentleBreathe {
+            0%, 100 Tri-state { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.04) scaleY(0.96) translateY(2px); }
+        }
+        .frog-character {
+            position: absolute;
+            width: 200px;
+            height: 150px;
+            animation: gentleBreathe 4s ease-in-out infinite;
+            transform-origin: bottom center;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
 
-        .frog-body {
+        /* Safe Layout Coordinates */
+        .pos-in-bed { bottom: 105px; right: 220px; z-index: 3; }
+        .pos-at-desk { bottom: 115px; left: 10%; z-index: 4; }
+
+        .body-base {
             width: 100%;
             height: 100%;
             background: #A3D977;
@@ -123,138 +131,163 @@
             position: absolute;
             top: 0;
             left: 0;
+            box-shadow: inset -10px -10px 0 rgba(0,0,0,0.06);
         }
-        .frog-eye { width: 60px; height: 60px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; }
-        .frog-eye.left { left: 30px; }
-        .frog-eye.right { right: 30px; }
+        .eye-left, .eye-right {
+            width: 55px;
+            height: 55px;
+            background: #A3D977;
+            border-radius: 50%;
+            position: absolute;
+            top: -15px;
+        }
+        .eye-left { left: 25px; }
+        .eye-right { right: 25px; }
         
-        .pupil { width: 24px; height: 24px; background: #2C3E50; border-radius: 50%; position: absolute; top: 18px; left: 18px; }
-        .pupil.sleeping { width: 26px; height: 5px; background: #2C3E50; border-radius: 3px; top: 28px; left: 17px; }
+        .eye-pupil {
+            width: 22px;
+            height: 22px;
+            background: #2C3E50;
+            border-radius: 50%;
+            position: absolute;
+            top: 16px;
+            left: 16px;
+        }
+        
+        /* Flattened Bedtime Closed Eyes */
+        .eye-pupil.asleep {
+            width: 24px;
+            height: 5px;
+            background: #2C3E50;
+            border-radius: 3px;
+            top: 26px;
+            left: 15px;
+        }
 
-        .frog-blush { width: 26px; height: 12px; background: #FFB3BA; border-radius: 50%; position: absolute; top: 75px; }
-        .frog-blush.left { left: 25px; }
-        .frog-blush.right { right: 25px; }
-        .frog-smile { width: 44px; height: 20px; border-bottom: 5px solid #2C3E50; border-radius: 0 0 22px 22px; position: absolute; top: 65px; left: 88px; }
+        .blush-pink {
+            width: 24px;
+            height: 12px;
+            background: #FFB3BA;
+            border-radius: 50%;
+            position: absolute;
+            top: 70px;
+        }
+        .blush-pink.l { left: 25px; }
+        .blush-pink.r { right: 25px; }
+        
+        .happy-smile {
+            width: 40px;
+            height: 18px;
+            border-bottom: 5px solid #2C3E50;
+            border-radius: 0 0 20px 20px;
+            position: absolute;
+            top: 62px;
+            left: 80px;
+        }
 
-        #info-box {
+        #status-card {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(255, 255, 255, 0.92);
-            padding: 15px;
+            background: rgba(255, 255, 255, 0.94);
+            padding: 14px 20px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
             z-index: 10;
         }
     </style>
 </head>
 <body>
 
-    <div id="info-box">
-        <h3 style="margin: 0 0 5px 0; color: #2C3E50;">Froggy's Schedule</h3>
-        <div id="weather-status">Checking your routine...</div>
+    <div id="status-card">
+        <h3 style="margin: 0 0 4px 0; color: #2C3E50;">Froggy's Schedule</h3>
+        <div id="activity-text">Syncing laptop clock...</div>
     </div>
 
-    <div class="cozy-room">
-        <div class="window">
-            <div class="window-line-v"></div><div class="window-line-h"></div>
-            <div class="star" style="width: 4px; height: 4px; top: 20%; left: 25%;"></div>
-            <div class="star" style="width: 5px; height: 5px; top: 55%; left: 70%;"></div>
+    <div class="room-container">
+        <!-- Window Layer -->
+        <div class="window-frame">
+            <div class="window-cross-v"></div><div class="window-cross-h"></div>
+            <div class="sky-star" style="top: 20%; left: 20%;"></div>
+            <div class="sky-star" style="top: 50%; left: 75%;"></div>
+            <div class="sky-star" style="top: 75%; left: 35%;"></div>
         </div>
 
-        <div class="study-desk"><div class="laptop"></div></div>
+        <!-- Desk Furniture Piece -->
+        <div class="study-desk"><div class="laptop-device"></div></div>
 
-        <div class="bed-frame">
-            <div class="pillow"></div>
-            <div class="blanket"></div>
+        <!-- Bed Furniture Piece -->
+        <div class="bed-setup">
+            <div class="soft-pillow"></div>
+            <div class="warm-blanket"></div>
         </div>
 
-        <!-- Froggy Wrapper -->
-        <div id="froggy" class="frog-wrapper position-bed">
-            <div class="frog-eye left"><div class="pupil" id="left-pupil"></div></div>
-            <div class="frog-eye right"><div class="pupil" id="right-pupil"></div></div>
-            <div class="frog-body">
-                <div class="frog-blush left"></div><div class="frog-blush right"></div>
-                <div class="frog-smile"></div>
+        <!-- Glued Character Core -->
+        <div id="frog-actor" class="frog-character pos-in-bed">
+            <div class="eye-left"><div class="eye-pupil" id="pupil-l"></div></div>
+            <div class="eye-right"><div class="eye-pupil" id="pupil-r"></div></div>
+            <div class="body-base">
+                <div class="blush-pink l"></div><div class="blush-pink r"></div>
+                <div class="happy-smile"></div>
             </div>
         </div>
     </div>
 
     <script>
-        function updateRoutine() {
-            const now = new Date();
-            const hour = now.getHours();
-            const minute = now.getMinutes();
-            const totalMinutes = (hour * 60) + minute;
+        function runScheduleTracker() {
+            const time = new Date();
+            const mins = (time.getHours() * 60) + time.getMinutes();
 
-            let statusText = "";
-            let currentScene = "sleep"; // sleep, school, bus, homework
+            let txt = "";
+            let mode = "sleep"; // sleep, bed-awake, work
 
-            if (totalMinutes >= 480 && totalMinutes < 510) {
-                statusText = "🍳 Breakfast time! Fueling up for the day.";
-                currentScene = "homework"; // sitting up at desk eating
-            } else if (totalMinutes >= 510 && totalMinutes < 780) {
-                statusText = "📚 Studying hard at school! Focus mode active.";
-                currentScene = "school";
-            } else if (totalMinutes >= 780 && totalMinutes < 840) {
-                statusText = "🥪 Lunch time! Eating mid-day snacks.";
-                currentScene = "school";
-            } else if (totalMinutes >= 840 && totalMinutes < 900) {
-                statusText = "🚌 Riding the bus home! Watching the road go by.";
-                currentScene = "bus";
-            } else if (totalMinutes >= 900 && totalMinutes < 960) {
-                statusText = "🐸 Free hour! Chilling in the room.";
-                currentScene = "homework";
-            } else if (totalMinutes >= 960 && totalMinutes < 1110) {
-                statusText = "✍️ Homework time! Working on assignments.";
-                currentScene = "homework";
-            } else if (totalMinutes >= 1110 && totalMinutes < 1140) {
-                statusText = "🍲 Dinner time! Family mealtime.";
-                currentScene = "homework";
-            } else if (totalMinutes >= 1140 && totalMinutes < 1260) {
-                statusText = "🎨 Drawing cute sketches and relaxing...";
-                currentScene = "homework";
-            } else {
-                statusText = "💤 Shhh... Froggy is fast asleep. Goodnight!";
-                currentScene = "sleep";
+            // --- TIMELINE CONTROLLER MAP ---
+            if (mins >= 360 && mins < 480) {          // 6:00 AM - 7:59 AM
+                txt = "🌅 Waking up and stretching... Good morning!";
+                mode = "bed-awake";
+            } else if (mins >= 480 && mins < 510) {   // 8:00 AM - 8:29 AM
+                txt = "🍳 Breakfast hour! Getting fueled up.";
+                mode = "work";
+            } else if (mins >= 510 && mins < 780) {   // 8:30 AM - 12:59 PM
+                txt = "📚 Working hard at school! Focus mode active.";
+                mode = "work";
+            } else if (mins >= 780 && mins < 840) {   // 1:00 PM - 1:59 PM
+                txt = "🥪 Lunch break! Taking a small recess.";
+                mode = "work";
+            } else if (mins >= 840 && mins < 900) {   // 2:00 PM - 2:59 PM
+                txt = "🚌 Riding the transit bus home! Beep beep.";
+                mode = "work";
+            } else if (mins >= 900 && mins < 960) {   // 3:00 PM - 3:59 PM
+                txt = "🐸 Free time! Winding down inside the room.";
+                mode = "work";
+            } else if (mins >= 960 && mins < 1110) {  // 4:00 PM - 6:29 PM
+                txt = "✍️ Homework time! Cranking out assignments.";
+                mode = "work";
+            } else if (mins >= 1110 && mins < 1140) { // 6:30 PM - 6:59 PM
+                txt = "🍲 Dinner time! Family mealtime.";
+                mode = "work";
+            } else if (mins >= 1140 && mins < 1260) { // 7:00 PM - 8:59 PM
+                txt = "🎨 Drawing sketches and unwinding...";
+                mode = "work";
+            } else {                                  // 9:00 PM - 5:59 AM
+                txt = "💤 Shhh... Froggy is fast asleep. Goodnight!";
+                mode = "sleep";
             }
 
-            // --- ANIMATION & ROOM TRANSITIONS ---
-            const frog = document.getElementById('froggy');
-            const leftPupil = document.getElementById('left-pupil');
-            const rightPupil = document.getElementById('right-pupil');
-            const desk = document.querySelector('.study-desk');
-            const stars = document.querySelectorAll('.star');
+            // --- RENDER DOM STYLING LAYOUT ---
+            const actor = document.getElementById('frog-actor');
+            const pL = document.getElementById('pupil-l');
+            const pR = document.getElementById('pupil-r');
+            const table = document.querySelector('.study-desk');
+            const stars = document.querySelectorAll('.sky-star');
+            const win = document.querySelector('.window-frame');
 
-            // Reset classes
-            frog.className = "frog-wrapper";
-            leftPupil.className = "pupil";
-            rightPupil.className = "pupil";
-            desk.style.display = "none";
+            // Reset setup states cleanly
+            actor.className = "frog-character";
+            pL.className = "eye-pupil";
+            pR.className = "eye-pupil";
+            table.style.display = "none";
             stars.forEach(s => s.style.display = "none");
+            win.style.background = "rgba(0,0,0,0.4)";
 
-            if (currentScene === "sleep") {
-                document.body.style.background = "#233342"; // Dark Night Wall
-                frog.classList.add("position-bed");
-                leftPupil.classList.add("sleeping");
-                rightPupil.classList.add("sleeping");
-                stars.forEach(s => s.style.display = "block");
-            } 
-            else if (currentScene === "school" || currentScene === "homework") {
-                document.body.style.background = currentScene === "school" ? "#AED6F1" : "#fff176"; // Blue wall / Yellow wall
-                frog.classList.add("position-desk");
-                desk.style.display = "block";
-            } 
-            else if (currentScene === "bus") {
-                document.body.style.background = "#ffcc80"; // Sunset bus orange sky
-                frog.classList.add("position-desk"); // stays on desk seat for bus ride
-            }
-
-            document.getElementById('weather-status').innerHTML = statusText;
-        }
-
-        updateRoutine();
-        setInterval(updateRoutine, 10000);
-    </script>
-</body>
-</html>
+            if (mode === "sleep") {
