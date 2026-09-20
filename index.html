@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Safe Weather Frog</title>
+    <title>My Animated Weather Frog</title>
     <style>
         body, html {
             margin: 0;
@@ -11,62 +11,147 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #729b53; /* Cozy frog green background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 1s ease;
         }
-        #frog-background {
+        .floor {
+            position: absolute;
+            bottom: 0;
             width: 100%;
-            height: 100%;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
+            height: 30%;
+            background: #8B5A2B;
+        }
+
+        /* 1. THIS ANIMATION MAKES THE WHOLE FROG BOUNCE UP AND DOWN */
+        @keyframes frogBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-15px); }
+        }
+
+        .frog-container {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            animation: frogBounce 3s ease-in-out infinite; /* Runs forever */
+        }
+
+        /* 2. THIS ANIMATION MAKES HIS BODY EXPAND AND BREATHE */
+        @keyframes frogBreathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .frog-body {
+            width: 150px;
+            height: 120px;
+            background: #A3D977;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            left: 25px;
+            box-shadow: inset -10px -10px 0px rgba(0,0,0,0.1);
+            animation: frogBreathe 3s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        .frog-eye {
+            width: 45px;
+            height: 45px;
+            background: #A3D977;
+            border-radius: 50%;
+            position: absolute;
+            top: 45px;
+        }
+        .frog-eye.left { left: 40px; }
+        .frog-eye.right { right: 40px; }
+
+        /* 3. THIS ANIMATION MAKES HIM BLINK HIS EYES EVERY FEW SECONDS */
+        @keyframes frogBlink {
+            0%, 95%, 100% { transform: scaleY(1); }
+            97% { transform: scaleY(0.1); }
+        }
+
+        .pupil {
+            width: 20px;
+            height: 20px;
+            background: #2C3E50;
+            border-radius: 50%;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            animation: frogBlink 4s infinite;
+        }
+
+        .frog-blush {
+            width: 20px;
+            height: 10px;
+            background: #FFA07A;
+            border-radius: 50%;
+            position: absolute;
+            top: 85px;
+        }
+        .frog-blush.left { left: 45px; }
+        .frog-blush.right { right: 45px; }
+        .frog-smile {
+            width: 40px;
+            height: 20px;
+            border-bottom: 4px solid #2C3E50;
+            border-radius: 0 0 20px 20px;
+            position: absolute;
+            top: 80px;
+            left: 80px;
         }
         #info-box {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 15px;
             border-radius: 12px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            z-index: 10;
         }
     </style>
 </head>
 <body>
 
     <div id="info-box">
-        <h3 style="margin: 0 0 5px 0;">Froggy's School Corner</h3>
-        <div id="weather-status">Checking your clock...</div>
+        <h3 style="margin: 0 0 5px 0; color: #2C3E50;">Froggy's Living Room</h3>
+        <div id="weather-status">Reading the clock...</div>
     </div>
 
-    <div id="frog-background"></div>
+    <div class="frog-container">
+        <div class="frog-eye left"><div class="pupil"></div></div>
+        <div class="frog-eye right"><div class="pupil"></div></div>
+        <div class="frog-body">
+            <div class="frog-blush left"></div>
+            <div class="frog-blush right"></div>
+            <div class="frog-smile"></div>
+        </div>
+    </div>
+    
+    <div class="floor"></div>
 
     <script>
-        // These links come straight from Google, so school filters cannot block them!
-        const FROG_IMAGES = {
-            day: "https://gstatic.com", // Google Weather Icon
-            night: "https://gstatic.com" // Google Night Icon
-        };
-
-        function updateFrogByTime() {
+        function updateThemeByTime() {
             const hour = new Date().getHours();
             let statusText = "";
-            let timeOfDay = "day";
 
-            // Past 6 PM (18:00), switch to night mode!
             if (hour >= 18 || hour < 6) {
-                timeOfDay = "night";
-                statusText = "🌙 It's past 8:50 PM in Bishan — Cozy Night Active!";
+                document.body.style.background = "#2C3E50"; // Cozy Dark Blue Night
+                statusText = "🌙 Cozy Night Mode Activated!";
             } else {
-                timeOfDay = "day";
-                statusText = "☀️ School Daytime Mode Active!";
+                document.body.style.background = "#AED6F1"; // Bright Blue Day
+                statusText = "☀️ Bright Day Mode Activated!";
             }
 
             document.getElementById('weather-status').innerHTML = statusText;
-            document.getElementById('frog-background').style.backgroundImage = `url('${FROG_IMAGES[timeOfDay]}')`;
         }
 
-        updateFrogByTime();
+        updateThemeByTime();
     </script>
 </body>
 </html>
