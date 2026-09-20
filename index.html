@@ -36,62 +36,40 @@
 <body>
 
     <div id="info-box">
-        <h3 style="margin: 0 0 5px 0;">Froggy's Weather</h3>
-        <div id="weather-status">Loading live weather...</div>
+        <h3 style="margin: 0 0 5px 0;">Froggy's Room</h3>
+        <div id="weather-status">Checking the clock...</div>
     </div>
 
     <div id="frog-background"></div>
 
     <script>
-        // 1. SET YOUR LOCATION HERE (Change to your city if needed)
-        const CITY = "Bishan"; 
-        const LAT = 1.3508;  // Latitude for Bishan
-        const LON = 103.8481; // Longitude for Bishan
-
-        // 2. PASTE YOUR FAVORITE MOVING GIF LINKS HERE
+        // These moving GIFs are hosted on a reliable server that schools don't block
         const FROG_GIFS = {
-            sunny: "https://giphy.com", // Change to a sunny frog GIF
-            rainy: "https://giphy.com", // Change to a rainy frog GIF
-            cloudy: "https://giphy.com", // Change to a cloudy frog GIF
-            default: "https://giphy.com"
+            day: "https://giphy.com", // Sunny daytime frog
+            night: "https://giphy.com" // Cozy nighttime frog
         };
 
-        // 3. THIS FUNCTION FETCHES LIVE WEATHER FROM OPEN-METEO (Free & School-Safe)
-        async function updateWeatherFrog() {
-            try {
-                const response = await fetch(`https://open-meteo.com{LAT}&longitude=${LON}&current_weather=true`);
-                const data = await response.json();
-                const weatherCode = data.current_weather.weathercode;
-                const temp = data.current_weather.temperature;
+        function updateFrogByTime() {
+            // Get your laptop's current hour (0 to 23)
+            const hour = new Date().getHours();
+            let statusText = "";
+            let timeOfDay = "day";
 
-                let condition = "sunny";
-                let statusText = `☀️ It is currently ${temp}°C and Sunny!`;
-
-                // Open-Meteo weather codes (e.g., 51-67 are rain, 1-3 are cloudy)
-                if (weatherCode >= 51 && weatherCode <= 82) {
-                    condition = "rainy";
-                    statusText = `🌧️ It is currently ${temp}°C and Raining!`;
-                } else if (weatherCode >= 1 && weatherCode <= 3) {
-                    condition = "cloudy";
-                    statusText = `☁️ It is currently ${temp}°C and Cloudy!`;
-                }
-
-                // Update the text box
-                document.getElementById('weather-status').innerHTML = statusText;
-                
-                // Update the background to the correct moving GIF!
-                document.getElementById('frog-background').style.backgroundImage = `url('${FROG_GIFS[condition]}')`;
-
-            } catch (error) {
-                document.getElementById('weather-status').innerHTML = "🐸 Froggy couldn't reach the weather satellite!";
-                document.getElementById('frog-background').style.backgroundImage = `url('${FROG_GIFS.default}')`;
+            // If it's between 6 PM (18) and 6 AM (6), show the cozy night frog!
+            if (hour >= 18 || hour < 6) {
+                timeOfDay = "night";
+                statusText = "🌙 Cozy Night Mode Activated!";
+            } else {
+                timeOfDay = "day";
+                statusText = "☀️ Bright Day Mode Activated!";
             }
+
+            document.getElementById('weather-status').innerHTML = statusText;
+            document.getElementById('frog-background').style.backgroundImage = `url('${FROG_GIFS[timeOfDay]}')`;
         }
 
-        // Run instantly when page loads
-        updateWeatherFrog();
+        // Run instantly
+        updateFrogByTime();
     </script>
 </body>
 </html>
-          
-    
