@@ -18,97 +18,114 @@
             transition: background 1s ease;
         }
 
-        /* 1. ANIMATION FOR BOUNCING */
+        /* 1. BODY ANIMATIONS */
         @keyframes frogBounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-12px); }
         }
-
         .frog-container {
             position: relative;
-            width: 200px;
-            height: 160px;
-            animation: frogBounce 3s ease-in-out infinite;
+            width: 260px;
+            height: 220px;
+            animation: frogBounce 4s ease-in-out infinite;
         }
 
-        /* 2. ANIMATION FOR BREATHING */
         @keyframes frogBreathe {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.06); }
+            50% { transform: scale(1.04) scaleY(0.98); }
         }
-
         .frog-body {
-            width: 160px;
-            height: 120px;
-            background: #A3D977; /* Bright Frog Green */
+            width: 220px;
+            height: 160px;
+            background: #A3D977;
             border-radius: 50%;
             position: absolute;
-            bottom: 0;
+            bottom: 10px;
             left: 20px;
-            box-shadow: inset -10px -10px 0px rgba(0,0,0,0.1);
-            animation: frogBreathe 3s ease-in-out infinite;
+            box-shadow: inset -12px -12px 0px rgba(0,0,0,0.08);
+            animation: frogBreathe 4s ease-in-out infinite;
             transform-origin: bottom center;
         }
 
         .frog-eye {
-            width: 45px;
-            height: 45px;
+            width: 65px;
+            height: 65px;
             background: #A3D977;
             border-radius: 50%;
             position: absolute;
-            top: 10px;
+            top: 5px;
             z-index: 2;
         }
-        .frog-eye.left { left: 35px; }
-        .frog-eye.right { right: 35px; }
+        .frog-eye.left { left: 45px; }
+        .frog-eye.right { right: 150px; }
 
-        /* 3. ANIMATION FOR BLINKING */
         @keyframes frogBlink {
-            0%, 95%, 100% { transform: scaleY(1); }
-            97% { transform: scaleY(0.1); }
+            0%, 96%, 100% { transform: scaleY(1); }
+            98% { transform: scaleY(0.05); }
         }
-
         .pupil {
-            width: 20px;
-            height: 20px;
+            width: 28px;
+            height: 28px;
             background: #2C3E50;
             border-radius: 50%;
             position: absolute;
-            top: 12px;
-            left: 12px;
-            animation: frogBlink 4s infinite;
+            top: 18px;
+            left: 18px;
+            animation: frogBlink 5s infinite;
             transform-origin: center;
         }
 
+        /* SLEEPING ANIMATION */
+        @keyframes frogSleep {
+            0%, 100% { transform: scaleY(0.1); }
+        }
+        .pupil.sleeping {
+            height: 6px;
+            top: 28px;
+            animation: frogSleep 1s infinite;
+        }
+
         .frog-blush {
-            width: 20px;
-            height: 10px;
-            background: #FFA07A;
+            width: 28px;
+            height: 14px;
+            background: #FFB3BA;
             border-radius: 50%;
             position: absolute;
-            top: 75px;
+            top: 95px;
         }
-        .frog-blush.left { left: 40px; }
-        .frog-blush.right { right: 40px; }
+        .frog-blush.left { left: 35px; }
+        .frog-blush.right { right: 155px; }
 
         .frog-smile {
-            width: 40px;
-            height: 20px;
-            border-bottom: 4px solid #2C3E50;
-            border-radius: 0 0 20px 20px;
+            width: 50px;
+            height: 24px;
+            border-bottom: 5px solid #2C3E50;
+            border-radius: 0 0 25px 25px;
             position: absolute;
-            top: 70px;
-            left: 60px;
+            top: 85px;
+            left: 85px;
+        }
+
+        /* TWINKLING NIGHT STARS */
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: starTwinkle 3s infinite ease-in-out;
         }
 
         #info-box {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.92);
             padding: 15px;
             border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
             z-index: 10;
         }
     </style>
@@ -116,14 +133,21 @@
 <body>
 
     <div id="info-box">
-        <h3 style="margin: 0 0 5px 0; color: #2C3E50;">Froggy's Living Room</h3>
-        <div id="weather-status">Reading the clock...</div>
+        <h3 style="margin: 0 0 5px 0; color: #2C3E50;">Froggy's Schedule</h3>
+        <div id="weather-status">Checking your routine...</div>
     </div>
 
-    <!-- Centered Moving Frog Body Parts -->
+    <!-- Night Window Stars -->
+    <div class="star" style="width: 4px; height: 4px; top: 15%; left: 20%;"></div>
+    <div class="star" style="width: 6px; height: 6px; top: 25%; left: 75%;"></div>
+    <div class="star" style="width: 5px; height: 5px; top: 45%; left: 15%;"></div>
+    <div class="star" style="width: 4px; height: 4px; top: 60%; left: 85%;"></div>
+    <div class="star" style="width: 7px; height: 7px; top: 10%; left: 60%;"></div>
+
+    <!-- The Cute Froggy -->
     <div class="frog-container">
-        <div class="frog-eye left"><div class="pupil"></div></div>
-        <div class="frog-eye right"><div class="pupil"></div></div>
+        <div class="frog-eye left"><div class="pupil" id="left-pupil"></div></div>
+        <div class="frog-eye right"><div class="pupil" id="right-pupil"></div></div>
         <div class="frog-body">
             <div class="frog-blush left"></div>
             <div class="frog-blush right"></div>
@@ -132,22 +156,106 @@
     </div>
 
     <script>
-        function updateThemeByTime() {
-            const hour = new Date().getHours();
-            let statusText = "";
+        function updateRoutine() {
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            
+            // Convert current time to total minutes so we can handle 8:30 and 6:30 easily
+            const totalMinutes = (hour * 60) + minute;
 
-            if (hour >= 18 || hour < 6) {
-                document.body.style.background = "#2C3E50"; // Midnight Cozy Dark Blue
-                statusText = "🌙 Cozy Night Mode Activated!";
-            } else {
-                document.body.style.background = "#AED6F1"; // School Day Bright Blue
-                statusText = "☀️ Bright Day Mode Activated!";
+            let statusText = "";
+            let isNight = false;
+            let isSleeping = false;
+
+            // --- ROUTINE TIMELINE RULES ---
+            
+            // 1. Breakfast at 8:00 AM to 8:29 AM
+            if (totalMinutes >= 480 && totalMinutes < 510) {
+                statusText = "🍳 Eating breakfast... om nom nom!";
+                isNight = false;
+            }
+            // 2. Studying at School from 8:30 AM to 1:00 PM
+            else if (totalMinutes >= 510 && totalMinutes < 780) {
+                statusText = "📚 Studying hard at school! Focus mode active.";
+                isNight = false;
+            }
+            // 3. Lunch at 1:00 PM to 1:59 PM
+            else if (totalMinutes >= 780 && totalMinutes < 840) {
+                statusText = "🥪 Lunch time! Taking a delicious school break.";
+                isNight = false;
+            }
+            // 4. Still at School until 2:00 PM
+            else if (totalMinutes >= 840 && totalMinutes < 840) {
+                statusText = "🎒 Gathering bags... school is almost out!";
+                isNight = false;
+            }
+            // 5. On the Bus from 2:00 PM to 3:00 PM
+            else if (totalMinutes >= 840 && totalMinutes < 900) {
+                statusText = "🚌 Riding the bus back home! Beep beep.";
+                isNight = false;
+            }
+            // 6. Free Time from 3:00 PM to 4:00 PM
+            else if (totalMinutes >= 900 && totalMinutes < 960) {
+                statusText = "🐸 Free hour! Relaxing before work starts.";
+                isNight = false;
+            }
+            // 7. Homework or Reading from 4:00 PM to 6:30 PM
+            else if (totalMinutes >= 960 && totalMinutes < 1110) {
+                statusText = "✍️ Doing homework and reading a storybook!";
+                isNight = false;
+            }
+            // 8. Dinner at 6:30 PM to 7:00 PM
+            else if (totalMinutes >= 1110 && totalMinutes < 1140) {
+                statusText = "🍲 Dinner time! Family mealtime.";
+                isNight = true; // Gets dark around dinner
+            }
+            // 9. Drawing or Reading until 9:00 PM
+            else if (totalMinutes >= 1140 && totalMinutes < 1260) {
+                statusText = "🎨 Drawing cute doodles and winding down...";
+                isNight = true;
+            }
+            // 10. Sleep Time from 9:00 PM onwards (until 6:00 AM next day)
+            else if (totalMinutes >= 1260 || totalMinutes < 360) {
+                statusText = "💤 Shhh... Froggy is fast asleep. Goodnight!";
+                isNight = true;
+                isSleeping = true;
+            }
+            // Default early morning buffer (6 AM to 8 AM)
+            else {
+                statusText = "🌅 Waking up and stretching for the day!";
+                isNight = false;
             }
 
+            // --- APPLY THE CHANGES TO THE PAGE ---
+            
+            // Set Background Theme
+            if (isNight) {
+                document.body.style.background = "#233342"; // Dark blue sky
+                document.querySelectorAll('.star').forEach(star => star.style.display = 'block');
+            } else {
+                document.body.style.background = "#BCE3FF"; // Daytime bright blue
+                document.querySelectorAll('.star').forEach(star => star.style.display = 'none');
+            }
+
+            // Set Sleeping Eyes or Blinking Eyes
+            const leftPupil = document.getElementById('left-pupil');
+            const rightPupil = document.getElementById('right-pupil');
+            if (isSleeping) {
+                leftPupil.className = "pupil sleeping";
+                rightPupil.className = "pupil sleeping";
+            } else {
+                leftPupil.className = "pupil";
+                rightPupil.className = "pupil";
+            }
+
+            // Print the live status string
             document.getElementById('weather-status').innerHTML = statusText;
         }
 
-        updateThemeByTime();
+        // Run instantly and keep checking the clock every 10 seconds
+        updateRoutine();
+        setInterval(updateRoutine, 10000);
     </script>
 </body>
 </html>
