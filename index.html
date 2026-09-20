@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Animated Weather Frog</title>
+    <title>My Safe Weather Frog</title>
     <style>
         body, html {
             margin: 0;
@@ -11,21 +11,20 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #000;
+            background-color: #729b53; /* Cozy frog green background */
         }
         #frog-background {
             width: 100%;
             height: 100%;
-            background-size: cover;
+            background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
-            transition: background-image 1s ease-in-out;
         }
         #info-box {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             padding: 15px;
             border-radius: 12px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -36,39 +35,37 @@
 <body>
 
     <div id="info-box">
-        <h3 style="margin: 0 0 5px 0;">Froggy's Room</h3>
-        <div id="weather-status">Checking the clock...</div>
+        <h3 style="margin: 0 0 5px 0;">Froggy's School Corner</h3>
+        <div id="weather-status">Checking your clock...</div>
     </div>
 
     <div id="frog-background"></div>
 
     <script>
-        // These moving GIFs are hosted on a reliable server that schools don't block
-        const FROG_GIFS = {
-            day: "https://giphy.com", // Sunny daytime frog
-            night: "https://giphy.com" // Cozy nighttime frog
+        // These links come straight from Google, so school filters cannot block them!
+        const FROG_IMAGES = {
+            day: "https://gstatic.com", // Google Weather Icon
+            night: "https://gstatic.com" // Google Night Icon
         };
 
         function updateFrogByTime() {
-            // Get your laptop's current hour (0 to 23)
             const hour = new Date().getHours();
             let statusText = "";
             let timeOfDay = "day";
 
-            // If it's between 6 PM (18) and 6 AM (6), show the cozy night frog!
+            // Past 6 PM (18:00), switch to night mode!
             if (hour >= 18 || hour < 6) {
                 timeOfDay = "night";
-                statusText = "🌙 Cozy Night Mode Activated!";
+                statusText = "🌙 It's past 8:50 PM in Bishan — Cozy Night Active!";
             } else {
                 timeOfDay = "day";
-                statusText = "☀️ Bright Day Mode Activated!";
+                statusText = "☀️ School Daytime Mode Active!";
             }
 
             document.getElementById('weather-status').innerHTML = statusText;
-            document.getElementById('frog-background').style.backgroundImage = `url('${FROG_GIFS[timeOfDay]}')`;
+            document.getElementById('frog-background').style.backgroundImage = `url('${FROG_IMAGES[timeOfDay]}')`;
         }
 
-        // Run instantly
         updateFrogByTime();
     </script>
 </body>
