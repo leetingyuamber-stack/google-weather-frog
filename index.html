@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Animated Weather Frog</title>
+    <title>Froggy's Interactive Routine</title>
     <style>
         body, html {
             margin: 0;
@@ -18,105 +18,123 @@
             transition: background 1s ease;
         }
 
-        /* 1. BODY ANIMATIONS */
-        @keyframes frogBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-        .frog-container {
+        .cozy-room {
             position: relative;
-            width: 260px;
-            height: 220px;
-            animation: frogBounce 4s ease-in-out infinite;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        @keyframes frogBreathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.04) scaleY(0.98); }
-        }
-        .frog-body {
-            width: 220px;
-            height: 160px;
-            background: #A3D977;
-            border-radius: 50%;
+        /* --- BACKGROUND SCENERY --- */
+        .window {
             position: absolute;
-            bottom: 10px;
-            left: 20px;
-            box-shadow: inset -12px -12px 0px rgba(0,0,0,0.08);
-            animation: frogBreathe 4s ease-in-out infinite;
-            transform-origin: bottom center;
+            top: 10%;
+            right: 15%;
+            width: 160px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 8px solid #5d4037;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            z-index: 1;
         }
+        .window-line-v { position: absolute; left: 50%; width: 6px; height: 100%; background: #5d4037; }
+        .window-line-h { position: absolute; top: 40%; width: 100%; height: 6px; background: #5d4037; }
+        
+        .star { position: absolute; background: white; border-radius: 50%; display: none; }
 
-        .frog-eye {
-            width: 65px;
-            height: 65px;
-            background: #A3D977;
-            border-radius: 50%;
+        /* --- THE CORE FURNITURE & OBJECTS --- */
+        .bed-frame {
             position: absolute;
-            top: 5px;
+            bottom: 5%;
+            width: 450px;
+            height: 180px;
+            background: #7e57c2;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
             z-index: 2;
         }
-        .frog-eye.left { left: 45px; }
-        .frog-eye.right { right: 150px; }
-
-        @keyframes frogBlink {
-            0%, 96%, 100% { transform: scaleY(1); }
-            98% { transform: scaleY(0.05); }
+        .pillow {
+            position: absolute;
+            top: -30px;
+            left: 20px;
+            width: 140px;
+            height: 50px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.05);
         }
-        .pupil {
-            width: 28px;
-            height: 28px;
-            background: #2C3E50;
+        .blanket {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 120px;
+            background: #e57373;
+            border-radius: 10px 10px 0 0;
+            z-index: 5;
+        }
+
+        /* Desktop study setup */
+        .study-desk {
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 220px;
+            height: 110px;
+            background: #a1887f;
+            border-radius: 10px 10px 0 0;
+            z-index: 2;
+            display: none;
+        }
+        .laptop {
+            position: absolute;
+            top: -30px;
+            left: 60px;
+            width: 70px;
+            height: 30px;
+            background: #b0bec5;
+            border-radius: 5px 5px 0 0;
+        }
+
+        /* --- FROGGY CHARACTER STRUCTURE --- */
+        @keyframes frogBreathe {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.03) scaleY(0.97) translateY(2px); }
+        }
+        .frog-wrapper {
+            position: absolute;
+            width: 220px;
+            height: 160px;
+            animation: frogBreathe 4s ease-in-out infinite;
+            transform-origin: bottom center;
+            transition: all 0.8s ease;
+        }
+
+        /* Positions for different activities */
+        .position-bed { top: -95px; left: 20px; z-index: 3; }
+        .position-desk { bottom: 100px; left: 5%; z-index: 4; }
+
+        .frog-body {
+            width: 100%;
+            height: 100%;
+            background: #A3D977;
             border-radius: 50%;
             position: absolute;
-            top: 18px;
-            left: 18px;
-            animation: frogBlink 5s infinite;
-            transform-origin: center;
+            top: 0;
+            left: 0;
         }
+        .frog-eye { width: 60px; height: 60px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; }
+        .frog-eye.left { left: 30px; }
+        .frog-eye.right { right: 30px; }
+        
+        .pupil { width: 24px; height: 24px; background: #2C3E50; border-radius: 50%; position: absolute; top: 18px; left: 18px; }
+        .pupil.sleeping { width: 26px; height: 5px; background: #2C3E50; border-radius: 3px; top: 28px; left: 17px; }
 
-        /* SLEEPING ANIMATION */
-        @keyframes frogSleep {
-            0%, 100% { transform: scaleY(0.1); }
-        }
-        .pupil.sleeping {
-            height: 6px;
-            top: 28px;
-            animation: frogSleep 1s infinite;
-        }
-
-        .frog-blush {
-            width: 28px;
-            height: 14px;
-            background: #FFB3BA;
-            border-radius: 50%;
-            position: absolute;
-            top: 95px;
-        }
-        .frog-blush.left { left: 35px; }
-        .frog-blush.right { right: 155px; }
-
-        .frog-smile {
-            width: 50px;
-            height: 24px;
-            border-bottom: 5px solid #2C3E50;
-            border-radius: 0 0 25px 25px;
-            position: absolute;
-            top: 85px;
-            left: 85px;
-        }
-
-        /* TWINKLING NIGHT STARS */
-        @keyframes starTwinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: starTwinkle 3s infinite ease-in-out;
-        }
+        .frog-blush { width: 26px; height: 12px; background: #FFB3BA; border-radius: 50%; position: absolute; top: 75px; }
+        .frog-blush.left { left: 25px; }
+        .frog-blush.right { right: 25px; }
+        .frog-smile { width: 44px; height: 20px; border-bottom: 5px solid #2C3E50; border-radius: 0 0 22px 22px; position: absolute; top: 65px; left: 88px; }
 
         #info-box {
             position: absolute;
@@ -137,21 +155,28 @@
         <div id="weather-status">Checking your routine...</div>
     </div>
 
-    <!-- Night Window Stars -->
-    <div class="star" style="width: 4px; height: 4px; top: 15%; left: 20%;"></div>
-    <div class="star" style="width: 6px; height: 6px; top: 25%; left: 75%;"></div>
-    <div class="star" style="width: 5px; height: 5px; top: 45%; left: 15%;"></div>
-    <div class="star" style="width: 4px; height: 4px; top: 60%; left: 85%;"></div>
-    <div class="star" style="width: 7px; height: 7px; top: 10%; left: 60%;"></div>
+    <div class="cozy-room">
+        <div class="window">
+            <div class="window-line-v"></div><div class="window-line-h"></div>
+            <div class="star" style="width: 4px; height: 4px; top: 20%; left: 25%;"></div>
+            <div class="star" style="width: 5px; height: 5px; top: 55%; left: 70%;"></div>
+        </div>
 
-    <!-- The Cute Froggy -->
-    <div class="frog-container">
-        <div class="frog-eye left"><div class="pupil" id="left-pupil"></div></div>
-        <div class="frog-eye right"><div class="pupil" id="right-pupil"></div></div>
-        <div class="frog-body">
-            <div class="frog-blush left"></div>
-            <div class="frog-blush right"></div>
-            <div class="frog-smile"></div>
+        <div class="study-desk"><div class="laptop"></div></div>
+
+        <div class="bed-frame">
+            <div class="pillow"></div>
+            <div class="blanket"></div>
+        </div>
+
+        <!-- Froggy Wrapper -->
+        <div id="froggy" class="frog-wrapper position-bed">
+            <div class="frog-eye left"><div class="pupil" id="left-pupil"></div></div>
+            <div class="frog-eye right"><div class="pupil" id="right-pupil"></div></div>
+            <div class="frog-body">
+                <div class="frog-blush left"></div><div class="frog-blush right"></div>
+                <div class="frog-smile"></div>
+            </div>
         </div>
     </div>
 
@@ -160,100 +185,74 @@
             const now = new Date();
             const hour = now.getHours();
             const minute = now.getMinutes();
-            
-            // Convert current time to total minutes so we can handle 8:30 and 6:30 easily
             const totalMinutes = (hour * 60) + minute;
 
             let statusText = "";
-            let isNight = false;
-            let isSleeping = false;
+            let currentScene = "sleep"; // sleep, school, bus, homework
 
-            // --- ROUTINE TIMELINE RULES ---
-            
-            // 1. Breakfast at 8:00 AM to 8:29 AM
             if (totalMinutes >= 480 && totalMinutes < 510) {
-                statusText = "🍳 Eating breakfast... om nom nom!";
-                isNight = false;
-            }
-            // 2. Studying at School from 8:30 AM to 1:00 PM
-            else if (totalMinutes >= 510 && totalMinutes < 780) {
+                statusText = "🍳 Breakfast time! Fueling up for the day.";
+                currentScene = "homework"; // sitting up at desk eating
+            } else if (totalMinutes >= 510 && totalMinutes < 780) {
                 statusText = "📚 Studying hard at school! Focus mode active.";
-                isNight = false;
-            }
-            // 3. Lunch at 1:00 PM to 1:59 PM
-            else if (totalMinutes >= 780 && totalMinutes < 840) {
-                statusText = "🥪 Lunch time! Taking a delicious school break.";
-                isNight = false;
-            }
-            // 4. Still at School until 2:00 PM
-            else if (totalMinutes >= 840 && totalMinutes < 840) {
-                statusText = "🎒 Gathering bags... school is almost out!";
-                isNight = false;
-            }
-            // 5. On the Bus from 2:00 PM to 3:00 PM
-            else if (totalMinutes >= 840 && totalMinutes < 900) {
-                statusText = "🚌 Riding the bus back home! Beep beep.";
-                isNight = false;
-            }
-            // 6. Free Time from 3:00 PM to 4:00 PM
-            else if (totalMinutes >= 900 && totalMinutes < 960) {
-                statusText = "🐸 Free hour! Relaxing before work starts.";
-                isNight = false;
-            }
-            // 7. Homework or Reading from 4:00 PM to 6:30 PM
-            else if (totalMinutes >= 960 && totalMinutes < 1110) {
-                statusText = "✍️ Doing homework and reading a storybook!";
-                isNight = false;
-            }
-            // 8. Dinner at 6:30 PM to 7:00 PM
-            else if (totalMinutes >= 1110 && totalMinutes < 1140) {
+                currentScene = "school";
+            } else if (totalMinutes >= 780 && totalMinutes < 840) {
+                statusText = "🥪 Lunch time! Eating mid-day snacks.";
+                currentScene = "school";
+            } else if (totalMinutes >= 840 && totalMinutes < 900) {
+                statusText = "🚌 Riding the bus home! Watching the road go by.";
+                currentScene = "bus";
+            } else if (totalMinutes >= 900 && totalMinutes < 960) {
+                statusText = "🐸 Free hour! Chilling in the room.";
+                currentScene = "homework";
+            } else if (totalMinutes >= 960 && totalMinutes < 1110) {
+                statusText = "✍️ Homework time! Working on assignments.";
+                currentScene = "homework";
+            } else if (totalMinutes >= 1110 && totalMinutes < 1140) {
                 statusText = "🍲 Dinner time! Family mealtime.";
-                isNight = true; // Gets dark around dinner
-            }
-            // 9. Drawing or Reading until 9:00 PM
-            else if (totalMinutes >= 1140 && totalMinutes < 1260) {
-                statusText = "🎨 Drawing cute doodles and winding down...";
-                isNight = true;
-            }
-            // 10. Sleep Time from 9:00 PM onwards (until 6:00 AM next day)
-            else if (totalMinutes >= 1260 || totalMinutes < 360) {
-                statusText = "💤 Shhh... Froggy is fast asleep. Goodnight!";
-                isNight = true;
-                isSleeping = true;
-            }
-            // Default early morning buffer (6 AM to 8 AM)
-            else {
-                statusText = "🌅 Waking up and stretching for the day!";
-                isNight = false;
-            }
-
-            // --- APPLY THE CHANGES TO THE PAGE ---
-            
-            // Set Background Theme
-            if (isNight) {
-                document.body.style.background = "#233342"; // Dark blue sky
-                document.querySelectorAll('.star').forEach(star => star.style.display = 'block');
+                currentScene = "homework";
+            } else if (totalMinutes >= 1140 && totalMinutes < 1260) {
+                statusText = "🎨 Drawing cute sketches and relaxing...";
+                currentScene = "homework";
             } else {
-                document.body.style.background = "#BCE3FF"; // Daytime bright blue
-                document.querySelectorAll('.star').forEach(star => star.style.display = 'none');
+                statusText = "💤 Shhh... Froggy is fast asleep. Goodnight!";
+                currentScene = "sleep";
             }
 
-            // Set Sleeping Eyes or Blinking Eyes
+            // --- ANIMATION & ROOM TRANSITIONS ---
+            const frog = document.getElementById('froggy');
             const leftPupil = document.getElementById('left-pupil');
             const rightPupil = document.getElementById('right-pupil');
-            if (isSleeping) {
-                leftPupil.className = "pupil sleeping";
-                rightPupil.className = "pupil sleeping";
-            } else {
-                leftPupil.className = "pupil";
-                rightPupil.className = "pupil";
+            const desk = document.querySelector('.study-desk');
+            const stars = document.querySelectorAll('.star');
+
+            // Reset classes
+            frog.className = "frog-wrapper";
+            leftPupil.className = "pupil";
+            rightPupil.className = "pupil";
+            desk.style.display = "none";
+            stars.forEach(s => s.style.display = "none");
+
+            if (currentScene === "sleep") {
+                document.body.style.background = "#233342"; // Dark Night Wall
+                frog.classList.add("position-bed");
+                leftPupil.classList.add("sleeping");
+                rightPupil.classList.add("sleeping");
+                stars.forEach(s => s.style.display = "block");
+            } 
+            else if (currentScene === "school" || currentScene === "homework") {
+                document.body.style.background = currentScene === "school" ? "#AED6F1" : "#fff176"; // Blue wall / Yellow wall
+                frog.classList.add("position-desk");
+                desk.style.display = "block";
+            } 
+            else if (currentScene === "bus") {
+                document.body.style.background = "#ffcc80"; // Sunset bus orange sky
+                frog.classList.add("position-desk"); // stays on desk seat for bus ride
             }
 
-            // Print the live status string
             document.getElementById('weather-status').innerHTML = statusText;
         }
 
-        // Run instantly and keep checking the clock every 10 seconds
         updateRoutine();
         setInterval(updateRoutine, 10000);
     </script>
