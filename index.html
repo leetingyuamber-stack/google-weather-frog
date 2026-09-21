@@ -13,7 +13,7 @@
         }
         .room-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
         
-        /* Scenery elements frame the official image stream beautifully */
+        /* Permanent cozy background scenery elements to frame the live window */
         .window-frame {
             position: absolute; top: 12%; right: 15%; width: 150px; height: 180px;
             background: rgba(0, 0, 0, 0.2); border: 8px solid #5d4037; border-radius: 4px; z-index: 1;
@@ -25,17 +25,6 @@
             position: absolute; bottom: 8%; left: 10%; width: 260px; height: 120px;
             background: #8d6e63; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 2;
         }
-        .laptop-device {
-            position: absolute; top: -26px; left: 140px; width: 70px; height: 26px;
-            background: #cfd8dc; border-radius: 4px 4px 0 0; border-bottom: 4px solid #90a4ae; display: none;
-        }
-        .textbook {
-            position: absolute; top: -12px; left: 130px; width: 60px; height: 12px;
-            background: #85c1e9; border-radius: 3px; display: none; z-index: 10;
-        }
-        .book-page-l { position: absolute; top: 1px; left: 2px; width: 27px; height: 10px; background: #ffffff; border-radius: 2px 0 0 2px; border-right: 1px solid #d5dbdb; }
-        .book-page-r { position: absolute; top: 1px; right: 2px; width: 27px; height: 10px; background: #ffffff; border-radius: 0 2px 2px 0; }
-        .breakfast-plate { position: absolute; top: -15px; left: 40px; width: 80px; height: 15px; background: #ffffff; border-radius: 50%; border-bottom: 3px solid #cfd8dc; z-index: 10; display: none; }
 
         .bed-setup {
             position: absolute; bottom: 8%; right: 10%; width: 420px; height: 160px;
@@ -44,16 +33,16 @@
         .soft-pillow { position: absolute; top: -24px; left: 20px; width: 130px; height: 45px; background: #ffffff; border-radius: 12px; }
         .warm-blanket { position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 5; }
 
-        /* --- THE DYNAMIC MOVING GIF ENGINE CONTAINER --- */
+        /* --- THE DYNAMIC MOVING GIF ENGINE CANVAS --- */
         .frog-character {
-            position: absolute; width: 240px; height: 240px;
+            position: absolute; width: 250px; height: 250px;
             z-index: 4; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             background-size: contain; background-repeat: no-repeat; background-position: bottom center;
-            border-radius: 24px;
         }
         .pos-in-bed { bottom: 135px; left: calc(90% - 220px); }
         .pos-at-desk { bottom: 125px; left: 11%; }
 
+        /* --- LIVE CALENDAR OVERLAY CARD --- */
         #status-card {
             position: absolute; top: 20px; left: 20px;
             background: rgba(255, 255, 255, 0.96); padding: 16px 22px; border-radius: 14px;
@@ -77,17 +66,10 @@
             <div class="window-cross-v"></div><div class="window-cross-h"></div>
         </div>
 
-        <div class="study-desk">
-            <div class="laptop-device"></div>
-            <div class="textbook">
-                <div class="book-page-l"></div><div class="book-page-r"></div>
-            </div>
-            <div class="breakfast-plate"></div>
-        </div>
-
+        <div class="study-desk"></div>
         <div class="bed-setup"><div class="soft-pillow"></div><div class="warm-blanket"></div></div>
 
-        <!-- Official Streaming Window Box -->
+        <!-- Clean, unbugged display anchor box -->
         <div id="frog-actor" class="frog-character"></div>
     </div>
     <script>
@@ -102,12 +84,8 @@
             const mins = (time.getHours() * 60) + time.getMinutes();
             let txt = "";
             let mode = "sleep"; 
-            let foodType = "none"; 
-            let showLaptop = false;
-            let showBook = false;
 
-            // --- LINK ARCHIVE DEPLOYMENT ASSETS ---
-            // These direct links pull the official animated layers seamlessly
+            // --- DEPLOYING UNBLOCKABLE DYNAMIC SOURCE LOOPS ---
             const ANIMATED_FROGS = {
                 sunny_study: "https://gstatic.com",
                 rainy_cozy: "https://gstatic.com"
@@ -119,16 +97,12 @@
             } else if (mins >= 480 && mins < 510) {   // 8:00 AM - 8:29 AM
                 txt = "🥞 Breakfast hour! MUNCHING on warm pancakes!";
                 mode = "work";
-                foodType = "pancake";
             } else if (mins >= 510 && mins < 780) {   // 8:30 AM - 12:59 PM
                 txt = "📚 Working hard at school! Focus mode active.";
                 mode = "work";
-                showLaptop = true; 
-                showBook = true;
             } else if (mins >= 780 && mins < 840) {   // 1:00 PM - 1:59 PM
                 txt = "🥪 Lunch break! Eating a fresh school sandwich.";
                 mode = "work";
-                foodType = "sandwich";
             } else if (mins >= 840 && mins < 900) {   // 2:00 PM - 2:59 PM
                 txt = "🚌 Riding the transit bus home! Beep beep.";
                 mode = "work";
@@ -138,12 +112,9 @@
             } else if (mins >= 960 && mins < 1110) {  // 4:00 PM - 6:29 PM
                 txt = "✍️ Homework time! Cranking out assignments.";
                 mode = "work";
-                showLaptop = true; 
-                showBook = true;
             } else if (mins >= 1110 && mins < 1140) { // 6:30 PM - 6:59 PM
                 txt = "🍲 Dinner time! Sipping a hot bowl of soup.";
                 mode = "work";
-                foodType = "soup";
             } else if (mins >= 1140 && mins < 1260) { // 7:00 PM - 8:59 PM
                 txt = "🎨 Drawing sketches and unwinding...";
                 mode = "work";
@@ -153,20 +124,12 @@
             }
 
             const actor = document.getElementById('frog-actor');
-            const table = document.querySelector('.study-desk');
             const win = document.querySelector('.window-frame');
-            const plate = document.querySelector('.breakfast-plate');
-            const laptop = document.querySelector('.laptop-device');
-            const book = document.querySelector('.textbook');
 
-            // Reset scenery variables safely
+            // Reset basic placement structures
             actor.className = "frog-character";
-            laptop.style.display = showLaptop ? "block" : "none";
-            book.style.display = showBook ? "block" : "none";
-            table.style.display = "block";
 
-            // Default animation stream fallback toggle
-            // Swaps automatically between clear day loops and cozy evening shelter loops
+            // Automatically load clear day loops or shelter home loops based on mode
             if (mode === "sleep" || mins >= 1110) {
                 actor.style.backgroundImage = `url('${ANIMATED_FROGS.rainy_cozy}')`;
             } else {
@@ -187,30 +150,13 @@
                 document.body.style.background = "#AED6F1"; 
                 win.style.background = "#e0f7fa"; 
                 actor.classList.add("pos-at-desk");
-                
-                if (foodType !== "none") {
-                    plate.style.display = "block";
-                    if (foodType === "pancake") {
-                        plate.style.background = "#ffffff";
-                        plate.innerHTML = '<div class="pancake"></div><div class="butter"></div>';
-                    } else if (foodType === "sandwich") {
-                        plate.style.background = "#ffffff";
-                        plate.innerHTML = '<div style="position:absolute; top:-8px; left:20px; width:40px; height:12px; background:#f4d03f; border-radius:2px; box-shadow:0 -3px 0 #2ecc71;"></div>';
-                    } else if (foodType === "soup") {
-                        plate.style.background = "#e74c3c"; 
-                        plate.innerHTML = '<div style="position:absolute; top:-4px; left:15px; width:50px; height:8px; background:#e67e22; border-radius:50%;"></div>'; 
-                    }
-                } else {
-                    plate.style.display = "none";
-                    plate.innerHTML = '';
-                }
             }
 
             document.getElementById('activity-text').innerHTML = txt;
         }
 
         runScheduleTracker();
-        setInterval(runScheduleTracker, 1000);
+        setInterval(runScheduleTracker, 1000); // 1-second clock ticks
     </script>
 </body>
 </html>
