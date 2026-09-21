@@ -13,6 +13,7 @@
         }
         .room-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
         
+        /* Scenery permanent tracking fixes */
         .window-frame {
             position: absolute; top: 12%; right: 15%; width: 150px; height: 180px;
             background: rgba(0, 0, 0, 0.4); border: 8px solid #5d4037; border-radius: 4px; z-index: 1;
@@ -21,28 +22,33 @@
         .window-cross-h { position: absolute; top: 40%; width: 100%; height: 4px; background: #5d4037; }
         .sky-star { position: absolute; background: white; border-radius: 50%; width: 4px; height: 4px; opacity: 0.8; }
         
+        /* Study desk permanently locked visible to secure layout items */
         .study-desk {
-            position: absolute; bottom: 5%; left: 8%; width: 240px; height: 110px;
-            background: #8d6e63; border-radius: 8px 8px 0 0; display: none; z-index: 2;
+            position: absolute; bottom: 8%; left: 10%; width: 260px; height: 120px;
+            background: #8d6e63; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 2; transition: opacity 0.5s ease;
         }
         
-        /* --- CUTE PANCAKE PLATE --- */
+        /* Laptop setup for school hours */
+        .laptop-device {
+            position: absolute; top: -26px; left: 140px; width: 70px; height: 26px;
+            background: #cfd8dc; border-radius: 4px 4px 0 0; border-bottom: 4px solid #90a4ae;
+            display: none;
+        }
+        
+        /* Transforming desktop dining plate slot */
         .breakfast-plate {
-            position: absolute; top: -15px; left: 80px; width: 80px; height: 15px;
+            position: absolute; top: -15px; left: 40px; width: 80px; height: 15px;
             background: #ffffff; border-radius: 50%; border-bottom: 3px solid #cfd8dc; z-index: 10;
+            display: none;
         }
-        .pancake {
-            position: absolute; top: -8px; left: 15px; width: 50px; height: 10px;
-            background: #f0b27a; border-radius: 50%; box-shadow: 0 2px 0 #d35400;
-        }
-        .butter {
-            position: absolute; top: -12px; left: 35px; width: 12px; height: 6px;
-            background: #f1c40f; border-radius: 2px;
-        }
+        .pancake { position: absolute; top: -8px; left: 15px; width: 50px; height: 10px; background: #f0b27a; border-radius: 50%; box-shadow: 0 2px 0 #d35400; }
+        .butter { position: absolute; top: -12px; left: 35px; width: 12px; height: 6px; background: #f1c40f; border-radius: 2px; }
 
         .bed-setup {
-            position: absolute; bottom: 5%; right: 8%; width: 420px; height: 160px;
-            background: #7e57c2; border-radius: 16px 16px 0 0; z-index: 2;
+            position: absolute; bottom: 8%; right: 10%; width: 420px; height: 160px;
+            background: #7e57c2; border-radius: 16px 16px 0 0; box-shadow: 0 12px 24px rgba(0,0,0,0.2); z-index: 2;
+            transition: opacity 0.5s ease;
         }
         .soft-pillow { position: absolute; top: -24px; left: 20px; width: 130px; height: 45px; background: #ffffff; border-radius: 12px; }
         .warm-blanket { position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 5; }
@@ -55,9 +61,10 @@
             position: absolute; width: 200px; height: 220px;
             animation: gentleBreathe 4s ease-in-out infinite;
             transform-origin: bottom center; z-index: 4;
+            transition: left 0.6s ease, right 0.6s ease, bottom 0.6s ease;
         }
-        .pos-in-bed { bottom: 105px; right: 220px; }
-        .pos-at-desk { bottom: 115px; left: 10%; }
+        .pos-in-bed { bottom: 135px; left: calc(90% - 200px); }
+        .pos-at-desk { bottom: 145px; left: 13%; }
 
         .body-base { width: 200px; height: 150px; background: #A3D977; border-radius: 50%; position: relative; box-shadow: inset -10px -10px 0 rgba(0,0,0,0.06); }
         .body-torso { width: 130px; height: 90px; background: #A3D977; border-radius: 50%; position: absolute; bottom: 0; left: 35px; z-index: 1; }
@@ -69,7 +76,6 @@
         .blush-pink.l { left: 25px; } .blush-pink.r { left: 150px; }
         .happy-smile { width: 40px; height: 18px; border-bottom: 5px solid #2C3E50; border-radius: 0 0 20px 20px; position: absolute; top: 62px; left: 80px; }
 
-        /* --- NEW UPGRADED CALENDAR OVERLAY CARD --- */
         #status-card {
             position: absolute; top: 20px; left: 20px;
             background: rgba(255, 255, 255, 0.96); padding: 16px 22px; border-radius: 14px;
@@ -97,6 +103,7 @@
         </div>
 
         <div class="study-desk">
+            <div class="laptop-device"></div>
             <div class="breakfast-plate">
                 <div class="pancake"></div>
                 <div class="butter"></div>
@@ -119,7 +126,7 @@
         function runScheduleTracker() {
             const time = new Date();
             
-            // Update Calendar overlay elements
+            // 1. FORCES THE DYNAMIC CALENDAR CARD TO PRINT THE TIME, DATE, AND DAY
             const optionsDate = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
             document.getElementById('live-date').innerHTML = time.toLocaleDateString('en-US', optionsDate);
             document.getElementById('live-clock').innerHTML = time.toLocaleTimeString('en-US', { hour12: true });
@@ -127,7 +134,8 @@
             const mins = (time.getHours() * 60) + time.getMinutes();
             let txt = "";
             let mode = "sleep"; 
-            let foodType = "none"; // none, pancake, sandwich, soup
+            let foodType = "none"; 
+            let showLaptop = false;
 
             // --- THE TRANSFORMING ROUTINE & FOOD TIMELINE ---
             if (mins >= 360 && mins < 480) {          // 6:00 AM - 7:59 AM
@@ -140,6 +148,7 @@
             } else if (mins >= 510 && mins < 780) {   // 8:30 AM - 12:59 PM
                 txt = "📚 Working hard at school! Focus mode active.";
                 mode = "work";
+                showLaptop = true; // Opens laptop for class!
             } else if (mins >= 780 && mins < 840) {   // 1:00 PM - 1:59 PM
                 txt = "🥪 Lunch break! Eating a fresh school sandwich.";
                 mode = "work";
@@ -153,6 +162,7 @@
             } else if (mins >= 960 && mins < 1110) {  // 4:00 PM - 6:29 PM
                 txt = "✍️ Homework time! Cranking out assignments.";
                 mode = "work";
+                showLaptop = true; // Homework device active!
             } else if (mins >= 1110 && mins < 1140) { // 6:30 PM - 6:59 PM
                 txt = "🍲 Dinner time! Sipping a hot bowl of soup.";
                 mode = "work";
@@ -172,13 +182,18 @@
             const win = document.querySelector('.window-frame');
             const stars = document.querySelectorAll('.sky-star');
             const plate = document.querySelector('.breakfast-plate');
+            const laptop = document.querySelector('.laptop-device');
 
-            // Reset layout basics safely
+            // Reset basic layout views safely
             actor.className = "frog-character";
             pL.className = "eye-pupil";
             pR.className = "eye-pupil";
-            table.style.display = "none";
             stars.forEach(s => s.style.display = "none");
+            laptop.style.display = showLaptop ? "block" : "none";
+
+            // Kept room fixtures permanently visible to prevent cutoff blank walls
+            table.style.opacity = "1";
+            table.style.display = "block";
 
             if (mode === "sleep") {
                 document.body.style.background = "#233342"; 
@@ -197,30 +212,32 @@
                 document.body.style.background = "#AED6F1"; 
                 win.style.background = "#e0f7fa"; 
                 actor.classList.add("pos-at-desk");
-                table.style.display = "block";
                 
                 // Magical transforming plate controller
-                if (foodType === "pancake") {
-                    plate.style.background = "#ffffff";
-                    plate.innerHTML = '<div class="pancake"></div><div class="butter"></div>';
-                } else if (foodType === "sandwich") {
-                    plate.style.background = "#ffffff";
-                    plate.innerHTML = '<div style="position:absolute; top:-8px; left:20px; width:40px; height:12px; background:#f4d03f; border-radius:2px; box-shadow:0 -3px 0 #2ecc71;"></div>'; // Cute green/cheese sandwich stack
-                } else if (foodType === "soup") {
-                    plate.style.background = "#e74c3c"; // Changes plate into a cozy red soup bowl container!
-                    plate.innerHTML = '<div style="position:absolute; top:-4px; left:15px; width:50px; height:8px; background:#e67e22; border-radius:50%;"></div>'; // Hot amber soup liquid
+                if (foodType !== "none") {
+                    plate.style.display = "block";
+                    if (foodType === "pancake") {
+                        plate.style.background = "#ffffff";
+                        plate.innerHTML = '<div class="pancake"></div><div class="butter"></div>';
+                    } else if (foodType === "sandwich") {
+                        plate.style.background = "#ffffff";
+                        plate.innerHTML = '<div style="position:absolute; top:-8px; left:20px; width:40px; height:12px; background:#f4d03f; border-radius:2px; box-shadow:0 -3px 0 #2ecc71;"></div>';
+                    } else if (foodType === "soup") {
+                        plate.style.background = "#e74c3c"; 
+                        plate.innerHTML = '<div style="position:absolute; top:-4px; left:15px; width:50px; height:8px; background:#e67e22; border-radius:50%;"></div>'; 
+                    }
                 } else {
-                    plate.innerHTML = ''; // Empty desk state when not eating!
-                    plate.style.background = "transparent";
-                    plate.style.border = "none";
+                    plate.style.display = "none";
+                    plate.innerHTML = '';
                 }
             }
 
             document.getElementById('activity-text').innerHTML = txt;
         }
 
+        // Run instantly and refresh every 1 second so the clock ticks smoothly
         runScheduleTracker();
-        setInterval(runScheduleTracker, 1000); // 1-second clock ticks
+        setInterval(runScheduleTracker, 1000);
     </script>
 </body>
 </html>
