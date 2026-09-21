@@ -1,53 +1,226 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Froggy Tracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Froggy's Cozy Life Tracker</title>
     <style>
-        body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background:#233342;font-family:sans-serif;transition:1s;}
-        #box{position:absolute;top:20px;left:20px;background:#fff;padding:15px;border-radius:8px;}
-        #frog{position:relative;width:200px;height:200px;animation:b 3s infinite ease-in-out;}
-        .h{width:200px;height:140px;background:#A3D977;border-radius:50%;position:absolute;z-index:2;}
-        .b{width:130px;height:90px;background:#A3D977;border-radius:50%;position:absolute;bottom:0;left:35px;z-index:1;}
-        .e{width:50px;height:50px;background:#A3D977;border-radius:50%;position:absolute;top:-15px;}
-        .l{left:25px;}.r{left:125px;}
-        .p{width:20px;height:22px;background:#2C3E50;border-radius:50%;position:absolute;top:15px;left:15px;}
-        .p.s{width:24px;height:5px;border-radius:3px;top:25px;left:13px;}
-        .c{width:24px;height:12px;background:#FFB3BA;border-radius:50%;position:absolute;top:70px;}
-        .cl{left:25px;}.cr{left:150px;}
-        .m{width:40px;height:15px;border-bottom:5px solid #2C3E50;border-radius:0 0 20px 20px;position:absolute;top:65px;left:80px;}
-        @keyframes b{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(4px) scale(1.02);}}
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            background: #233342; transition: background 1s ease;
+        }
+        .room-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        
+        .window-frame {
+            position: absolute; top: 12%; right: 15%; width: 150px; height: 180px;
+            background: rgba(0, 0, 0, 0.4); border: 8px solid #5d4037; border-radius: 4px; z-index: 1;
+        }
+        .window-cross-v { position: absolute; left: 50%; width: 4px; height: 100%; background: #5d4037; transform: translateX(-50%); }
+        .window-cross-h { position: absolute; top: 40%; width: 100%; height: 4px; background: #5d4037; }
+        .sky-star { position: absolute; background: white; border-radius: 50%; width: 4px; height: 4px; opacity: 0.8; }
+        
+        .study-desk {
+            position: absolute; bottom: 5%; left: 8%; width: 240px; height: 110px;
+            background: #8d6e63; border-radius: 8px 8px 0 0; display: none; z-index: 2;
+        }
+        
+        /* --- CUTE PANCAKE PLATE --- */
+        .breakfast-plate {
+            position: absolute; top: -15px; left: 80px; width: 80px; height: 15px;
+            background: #ffffff; border-radius: 50%; border-bottom: 3px solid #cfd8dc; z-index: 10;
+        }
+        .pancake {
+            position: absolute; top: -8px; left: 15px; width: 50px; height: 10px;
+            background: #f0b27a; border-radius: 50%; box-shadow: 0 2px 0 #d35400;
+        }
+        .butter {
+            position: absolute; top: -12px; left: 35px; width: 12px; height: 6px;
+            background: #f1c40f; border-radius: 2px;
+        }
+
+        .bed-setup {
+            position: absolute; bottom: 5%; right: 8%; width: 420px; height: 160px;
+            background: #7e57c2; border-radius: 16px 16px 0 0; z-index: 2;
+        }
+        .soft-pillow { position: absolute; top: -24px; left: 20px; width: 130px; height: 45px; background: #ffffff; border-radius: 12px; }
+        .warm-blanket { position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 5; }
+
+        @keyframes gentleBreathe {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.03) scaleY(0.97) translateY(2px); }
+        }
+        .frog-character {
+            position: absolute; width: 200px; height: 220px;
+            animation: gentleBreathe 4s ease-in-out infinite;
+            transform-origin: bottom center; z-index: 4;
+        }
+        .pos-in-bed { bottom: 105px; right: 220px; }
+        .pos-at-desk { bottom: 115px; left: 10%; }
+
+        .body-base { width: 200px; height: 150px; background: #A3D977; border-radius: 50%; position: relative; box-shadow: inset -10px -10px 0 rgba(0,0,0,0.06); }
+        .body-torso { width: 130px; height: 90px; background: #A3D977; border-radius: 50%; position: absolute; bottom: 0; left: 35px; z-index: 1; }
+        .eye-left { width: 55px; height: 55px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; left: 25px; }
+        .eye-right { width: 55px; height: 55px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; left: 120px; }
+        .eye-pupil { width: 22px; height: 22px; background: #2C3E50; border-radius: 50%; position: absolute; top: 16px; left: 16px; }
+        .eye-pupil.asleep { width: 24px; height: 5px; background: #2C3E50; border-radius: 3px; top: 26px; left: 15px; }
+        .blush-pink { width: 24px; height: 12px; background: #FFB3BA; border-radius: 50%; position: absolute; top: 70px; }
+        .blush-pink.l { left: 25px; } .blush-pink.r { left: 150px; }
+        .happy-smile { width: 40px; height: 18px; border-bottom: 5px solid #2C3E50; border-radius: 0 0 20px 20px; position: absolute; top: 62px; left: 80px; }
+
+        /* --- NEW UPGRADED CALENDAR OVERLAY CARD --- */
+        #status-card {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(255, 255, 255, 0.96); padding: 16px 22px; border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15); z-index: 10; min-width: 220px;
+        }
+        #live-clock { font-size: 24px; font-weight: bold; color: #2C3E50; margin-bottom: 2px; }
+        #live-date { font-size: 14px; font-weight: 600; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        #activity-text { font-size: 14px; color: #34495e; font-weight: 500; border-top: 1px solid #eee; padding-top: 8px; }
     </style>
 </head>
 <body>
-    <div id="box"><h3 style="margin:0 0 5px 0;">Froggy's Schedule</h3><div id="txt">Syncing...</div></div>
-    <div id="frog">
-        <div class="h">
-            <div class="e l"><div class="p" id="pl"></div></div>
-            <div class="e r"><div class="p" id="pr"></div></div>
-            <div class="c cl"></div><div class="c cr"></div>
-            <div class="m"></div>
+
+    <div id="status-card">
+        <div id="live-clock">00:00:00 AM</div>
+        <div id="live-date">Loading Calendar...</div>
+        <div id="activity-text">Syncing laptop...</div>
+    </div>
+
+    <div class="room-container">
+        <div class="window-frame">
+            <div class="window-cross-v"></div><div class="window-cross-h"></div>
+            <div class="sky-star" style="top: 20%; left: 20%;"></div>
+            <div class="sky-star" style="top: 50%; left: 75%;"></div>
+            <div class="sky-star" style="top: 75%; left: 35%;"></div>
         </div>
-        <div class="b"></div>
+
+        <div class="study-desk">
+            <div class="breakfast-plate">
+                <div class="pancake"></div>
+                <div class="butter"></div>
+            </div>
+        </div>
+
+        <div class="bed-setup"><div class="soft-pillow"></div><div class="warm-blanket"></div></div>
+
+        <div id="frog-actor" class="frog-character">
+            <div class="body-base">
+                <div class="eye-left"><div class="eye-pupil" id="pupil-l"></div></div>
+                <div class="eye-right"><div class="eye-pupil" id="pupil-r"></div></div>
+                <div class="blush-pink l"></div><div class="blush-pink r"></div>
+                <div class="happy-smile"></div>
+            </div>
+            <div class="body-torso"></div>
+        </div>
     </div>
     <script>
-        function check(){
-            const m = (new Date().getHours()*60)+new Date().getMinutes();
-            let t="💤 Fast asleep...", s=true, bg="#233342";
-            if(m>=360&&m<480){t="🌅 Waking up...";s=false;bg="#fff176";}
-            else if(m>=480&&m<510){t="🍳 Breakfast time!";s=false;bg="#AED6F1";}
-            else if(m>=510&&m<780){t="📚 Studying hard at school!";s=false;bg="#AED6F1";}
-            else if(m>=780&&m<840){t="🥪 Lunch break!";s=false;bg="#AED6F1";}
-            else if(m>=840&&m<900){t="🚌 Riding the bus home!";s=false;bg="#AED6F1";}
-            else if(m>=900&&m<960){t="🐸 Free room time!";s=false;bg="#fff176";}
-            else if(m>=960&&m<1110){t="✍️ Homework focus!";s=false;bg="#fff176";}
-            else if(m>=1110&&m<1140){t="🍲 Dinner time!";s=false;bg="#233342";}
-            else if(m>=1140&&m<1260){t="🎨 Drawing cute sketches!";s=false;bg="#233342";}
-            document.body.style.background=bg;
-            document.getElementById("txt").innerHTML=t;
-            document.getElementById("pl").className=s?"p s":"p";
-            document.getElementById("pr").className=s?"p s":"p";
+        function runScheduleTracker() {
+            const time = new Date();
+            
+            // Update Calendar overlay elements
+            const optionsDate = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+            document.getElementById('live-date').innerHTML = time.toLocaleDateString('en-US', optionsDate);
+            document.getElementById('live-clock').innerHTML = time.toLocaleTimeString('en-US', { hour12: true });
+
+            const mins = (time.getHours() * 60) + time.getMinutes();
+            let txt = "";
+            let mode = "sleep"; 
+            let foodType = "none"; // none, pancake, sandwich, soup
+
+            // --- THE TRANSFORMING ROUTINE & FOOD TIMELINE ---
+            if (mins >= 360 && mins < 480) {          // 6:00 AM - 7:59 AM
+                txt = "🌅 Waking up and stretching... Good morning!";
+                mode = "bed-awake";
+            } else if (mins >= 480 && mins < 510) {   // 8:00 AM - 8:29 AM
+                txt = "🥞 Breakfast hour! MUNCHING on warm pancakes!";
+                mode = "work";
+                foodType = "pancake";
+            } else if (mins >= 510 && mins < 780) {   // 8:30 AM - 12:59 PM
+                txt = "📚 Working hard at school! Focus mode active.";
+                mode = "work";
+            } else if (mins >= 780 && mins < 840) {   // 1:00 PM - 1:59 PM
+                txt = "🥪 Lunch break! Eating a fresh school sandwich.";
+                mode = "work";
+                foodType = "sandwich";
+            } else if (mins >= 840 && mins < 900) {   // 2:00 PM - 2:59 PM
+                txt = "🚌 Riding the transit bus home! Beep beep.";
+                mode = "work";
+            } else if (mins >= 900 && mins < 960) {   // 3:00 PM - 3:59 PM
+                txt = "🐸 Free time! Winding down inside the room.";
+                mode = "work";
+            } else if (mins >= 960 && mins < 1110) {  // 4:00 PM - 6:29 PM
+                txt = "✍️ Homework time! Cranking out assignments.";
+                mode = "work";
+            } else if (mins >= 1110 && mins < 1140) { // 6:30 PM - 6:59 PM
+                txt = "🍲 Dinner time! Sipping a hot bowl of soup.";
+                mode = "work";
+                foodType = "soup";
+            } else if (mins >= 1140 && mins < 1260) { // 7:00 PM - 8:59 PM
+                txt = "🎨 Drawing sketches and unwinding...";
+                mode = "work";
+            } else {                                  // 9:00 PM - 5:59 AM
+                txt = "💤 Shhh... Froggy is fast asleep. Goodnight!";
+                mode = "sleep";
+            }
+
+            const actor = document.getElementById('frog-actor');
+            const pL = document.getElementById('pupil-l');
+            const pR = document.getElementById('pupil-r');
+            const table = document.querySelector('.study-desk');
+            const win = document.querySelector('.window-frame');
+            const stars = document.querySelectorAll('.sky-star');
+            const plate = document.querySelector('.breakfast-plate');
+
+            // Reset layout basics safely
+            actor.className = "frog-character";
+            pL.className = "eye-pupil";
+            pR.className = "eye-pupil";
+            table.style.display = "none";
+            stars.forEach(s => s.style.display = "none");
+
+            if (mode === "sleep") {
+                document.body.style.background = "#233342"; 
+                win.style.background = "rgba(0,0,0,0.6)";
+                actor.classList.add("pos-in-bed");
+                pL.classList.add("asleep");
+                pR.classList.add("asleep");
+                stars.forEach(s => s.style.display = "block");
+            } 
+            else if (mode === "bed-awake") {
+                document.body.style.background = "#fff176"; 
+                win.style.background = "#e0f7fa"; 
+                actor.classList.add("pos-in-bed");
+            } 
+            else if (mode === "work") {
+                document.body.style.background = "#AED6F1"; 
+                win.style.background = "#e0f7fa"; 
+                actor.classList.add("pos-at-desk");
+                table.style.display = "block";
+                
+                // Magical transforming plate controller
+                if (foodType === "pancake") {
+                    plate.style.background = "#ffffff";
+                    plate.innerHTML = '<div class="pancake"></div><div class="butter"></div>';
+                } else if (foodType === "sandwich") {
+                    plate.style.background = "#ffffff";
+                    plate.innerHTML = '<div style="position:absolute; top:-8px; left:20px; width:40px; height:12px; background:#f4d03f; border-radius:2px; box-shadow:0 -3px 0 #2ecc71;"></div>'; // Cute green/cheese sandwich stack
+                } else if (foodType === "soup") {
+                    plate.style.background = "#e74c3c"; // Changes plate into a cozy red soup bowl container!
+                    plate.innerHTML = '<div style="position:absolute; top:-4px; left:15px; width:50px; height:8px; background:#e67e22; border-radius:50%;"></div>'; // Hot amber soup liquid
+                } else {
+                    plate.innerHTML = ''; // Empty desk state when not eating!
+                    plate.style.background = "transparent";
+                    plate.style.border = "none";
+                }
+            }
+
+            document.getElementById('activity-text').innerHTML = txt;
         }
-        check();setInterval(check,10000);
+
+        runScheduleTracker();
+        setInterval(runScheduleTracker, 1000); // 1-second clock ticks
     </script>
 </body>
 </html>
