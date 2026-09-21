@@ -224,10 +224,8 @@
             <div class="sky-star" style="top: 75%; left: 35%;"></div>
         </div>
 
-        <!-- Desk -->
         <div class="study-desk"><div class="laptop-device"></div></div>
 
-        <!-- Bed -->
         <div class="bed-setup">
             <div class="soft-pillow"></div>
             <div class="warm-blanket"></div>
@@ -288,8 +286,8 @@
             const pL = document.getElementById('pupil-l');
             const pR = document.getElementById('pupil-r');
             const table = document.querySelector('.study-desk');
-            const stars = document.querySelectorAll('.sky-star');
             const win = document.querySelector('.window-frame');
+            const stars = document.querySelectorAll('.sky-star');
 
             actor.className = "frog-character";
             pL.className = "eye-pupil";
@@ -300,4 +298,32 @@
             if (mode === "sleep") {
                 document.body.style.background = "#233342"; 
                 win.style.background = "rgba(0,0,0,0.6)";
-                
+                actor.classList.add("pos-in-bed");
+  if (mode === "sleep") {
+                document.body.style.background = "#233342"; 
+                win.style.background = "rgba(0,0,0,0.6)";
+                actor.classList.add("pos-in-bed");
+                pL.classList.add("asleep");
+                pR.classList.add("asleep");
+                stars.forEach(s => s.style.display = "block");
+            } 
+            else if (mode === "bed-awake") {
+                document.body.style.background = "#fff176"; 
+                win.style.background = "#e0f7fa"; 
+                actor.classList.add("pos-in-bed");
+            } 
+            else if (mode === "work") {
+                document.body.style.background = "#AED6F1"; 
+                win.style.background = "#e0f7fa"; 
+                actor.classList.add("pos-at-desk");
+                table.style.display = "block";
+            }
+
+            document.getElementById('activity-text').innerHTML = txt;
+        }
+
+        runScheduleTracker();
+        setInterval(runScheduleTracker, 10000);
+    </script>
+</body>
+</html>
