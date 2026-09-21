@@ -22,9 +22,11 @@
         .window-cross-h { position: absolute; top: 40%; width: 100%; height: 4px; background: #5d4037; }
         .sky-star { position: absolute; background: white; border-radius: 50%; width: 4px; height: 4px; opacity: 0.8; }
         
+        /* --- FIXED DESK LAYER VALUE --- */
+        /* Increased z-index to 5 so it physically sits IN FRONT of the frog torso! */
         .study-desk {
             position: absolute; bottom: 8%; left: 10%; width: 260px; height: 120px;
-            background: #8d6e63; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 2;
+            background: #8d6e63; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 5;
         }
         .laptop-device {
             position: absolute; top: -26px; left: 140px; width: 70px; height: 26px;
@@ -43,9 +45,10 @@
             background: #7e57c2; border-radius: 16px 16px 0 0; box-shadow: 0 12px 24px rgba(0,0,0,0.2); z-index: 2;
         }
         .soft-pillow { position: absolute; top: -24px; left: 20px; width: 130px; height: 45px; background: #ffffff; border-radius: 12px; }
-        .warm-blanket { position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 5; }
+        .warm-blanket { position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 6; } /* Adjusted for blanket overlay depth */
 
-        /* --- UNBLOCKABLE VECTOR MOVING BODY RULES --- */
+        /* --- FROG LAYER VALUE SLID DOWN --- */
+        /* Set z-index to 3 so his lower body tucks neatly behind the desk profile! */
         @keyframes gentleBreathe {
             0%, 100% { transform: scale(1) translateY(0); }
             50% { transform: scale(1.03) scaleY(0.97) translateY(2px); }
@@ -53,21 +56,18 @@
         .frog-character {
             position: absolute; width: 200px; height: 220px;
             animation: gentleBreathe 4s ease-in-out infinite;
-            transform-origin: bottom center; z-index: 4;
+            transform-origin: bottom center; z-index: 3;
             transition: left 0.6s ease, right 0.6s ease, bottom 0.6s ease;
         }
-        .pos-in-bed { bottom: 135px; left: calc(90% - 200px); }
-        .pos-at-desk { bottom: 145px; left: 13%; }
+        .pos-in-bed { bottom: 135px; left: calc(90% - 200px); z-index: 4; } /* Keeps him above pillow/bed frame sheets */
+        .pos-at-desk { bottom: 55px; left: 12%; } /* Shifted down slightly to tuck beneath table lip */
 
-        /* Permanently locked face-join layers */
         .body-base { width: 200px; height: 150px; background: #A3D977; border-radius: 50%; position: relative; box-shadow: inset -10px -10px 0 rgba(0,0,0,0.06); }
         .body-torso { width: 130px; height: 90px; background: #A3D977; border-radius: 50%; position: absolute; bottom: 0; left: 35px; z-index: 1; }
         .eye-left { width: 55px; height: 55px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; left: 25px; }
         .eye-right { width: 55px; height: 55px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; left: 120px; }
-        
         .eye-pupil { width: 22px; height: 22px; background: #2C3E50; border-radius: 50%; position: absolute; top: 16px; left: 16px; }
         .eye-pupil.asleep { width: 24px; height: 5px; background: #2C3E50; border-radius: 3px; top: 26px; left: 15px; }
-        
         .blush-pink { width: 24px; height: 12px; background: #FFB3BA; border-radius: 50%; position: absolute; top: 70px; }
         .blush-pink.l { left: 25px; } .blush-pink.r { left: 150px; }
         .happy-smile { width: 40px; height: 18px; border-bottom: 5px solid #2C3E50; border-radius: 0 0 20px 20px; position: absolute; top: 62px; left: 80px; }
@@ -108,7 +108,6 @@
 
         <div class="bed-setup"><div class="soft-pillow"></div><div class="warm-blanket"></div></div>
 
-        <!-- Reconstructed code frog structure -->
         <div id="frog-actor" class="frog-character">
             <div class="body-base">
                 <div class="eye-left"><div class="eye-pupil" id="pupil-l"></div></div>
@@ -184,7 +183,7 @@
             const laptop = document.querySelector('.laptop-device');
             const book = document.querySelector('.textbook');
 
-            // Reset state defaults cleanly
+            // Reset engine setups cleanly
             actor.className = "frog-character";
             pL.className = "eye-pupil";
             pR.className = "eye-pupil";
@@ -192,10 +191,13 @@
             laptop.style.display = showLaptop ? "block" : "none";
             book.style.display = showBook ? "block" : "none";
 
+            table.style.display = "block";
+
             if (mode === "sleep") {
                 document.body.style.background = "#233342"; 
                 win.style.background = "rgba(0,0,0,0.6)";
                 actor.classList.add("pos-in-bed");
+                actor.style.zIndex = "4"; // Keeps him above bed base sheets
                 pL.classList.add("asleep");
                 pR.classList.add("asleep");
                 stars.forEach(s => s.style.display = "block");
@@ -204,13 +206,15 @@
                 document.body.style.background = "#fff176"; 
                 win.style.background = "#e0f7fa"; 
                 actor.classList.add("pos-in-bed");
+                actor.style.zIndex = "4";
             } 
             else if (mode === "work") {
                 document.body.style.background = "#AED6F1"; 
                 win.style.background = "#e0f7fa"; 
                 actor.classList.add("pos-at-desk");
+                actor.style.zIndex = "3"; // Slides him behind the desk box layers
                 
-                // Platter custom element manager
+                // Platter object items manager
                 if (foodType !== "none") {
                     plate.style.display = "block";
                     if (foodType === "pancake") {
@@ -233,7 +237,7 @@
         }
 
         runScheduleTracker();
-        setInterval(runScheduleTracker, 1000); // 1-second ticks
+        setInterval(runScheduleTracker, 1000); // 1-second ticking cycles
     </script>
 </body>
 </html>
