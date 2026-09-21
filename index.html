@@ -6,242 +6,97 @@
     <title>Froggy's Cozy Life Tracker</title>
     <style>
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #233342;
-            transition: background 1s ease;
+            display: flex; justify-content: center; align-items: center;
+            background: #233342; transition: background 1s ease;
         }
-
-        .room-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* --- ROOM SCENERY --- */
+        .room-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
         .window-frame {
-            position: absolute;
-            top: 12%;
-            right: 15%;
-            width: 150px;
-            height: 180px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 8px solid #5d4037;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            border-radius: 4px;
-            z-index: 1;
+            position: absolute; top: 12%; right: 15%; width: 150px; height: 180px;
+            background: rgba(0, 0, 0, 0.4); border: 8px solid #5d4037; border-radius: 4px; z-index: 1;
         }
         .window-cross-v { position: absolute; left: 50%; width: 4px; height: 100%; background: #5d4037; transform: translateX(-50%); }
         .window-cross-h { position: absolute; top: 40%; width: 100%; height: 4px; background: #5d4037; }
-        
-        .sky-star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            width: 4px;
-            height: 4px;
-            opacity: 0.8;
-        }
-
+        .sky-star { position: absolute; background: white; border-radius: 50%; width: 4px; height: 4px; opacity: 0.8; }
         .study-desk {
-            position: absolute;
-            bottom: 5%;
-            left: 8%;
-            width: 240px;
-            height: 110px;
-            background: #8d6e63;
-            border-radius: 8px 8px 0 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            display: none;
-            z-index: 2;
+            position: absolute; bottom: 5%; left: 8%; width: 240px; height: 110px;
+            background: #8d6e63; border-radius: 8px 8px 0 0; display: none; z-index: 2;
         }
         .laptop-device {
-            position: absolute;
-            top: -26px;
-            left: 85px;
-            width: 70px;
-            height: 26px;
-            background: #cfd8dc;
-            border-radius: 4px 4px 0 0;
-            border-bottom: 4px solid #90a4ae;
+            position: absolute; top: -26px; left: 85px; width: 70px; height: 26px;
+            background: #cfd8dc; border-radius: 4px 4px 0 0; border-bottom: 4px solid #90a4ae;
         }
-
         .bed-setup {
-            position: absolute;
-            bottom: 5%;
-            right: 8%;
-            width: 420px;
-            height: 160px;
-            background: #7e57c2;
-            border-radius: 16px 16px 0 0;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
-            z-index: 2;
+            position: absolute; bottom: 5%; right: 8%; width: 420px; height: 160px;
+            background: #7e57c2; border-radius: 16px 16px 0 0; z-index: 2;
         }
         .soft-pillow {
-            position: absolute;
-            top: -24px;
-            left: 20px;
-            width: 130px;
-            height: 45px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            position: absolute; top: -24px; left: 20px; width: 130px; height: 45px;
+            background: #ffffff; border-radius: 12px;
         }
         .warm-blanket {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 110px;
-            background: #e57373;
-            border-radius: 8px 8px 0 0;
-            box-shadow: inset 0 8px 0 rgba(0,0,0,0.05);
-            z-index: 5;
+            position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 5;
         }
 
-        /* --- THE CHARACTER ANCHOR BOX --- */
-        @keyframes gentleBreathe {
+        /* --- NEW ANIMATION RULES FOR THE WHOLE MOVING BODY --- */
+        @keyframes frogBreathe {
             0%, 100% { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.03) scaleY(0.97) translateY(2px); }
+            50% { transform: scale(1.03) scaleY(0.97) translateY(3px); }
         }
         .frog-character {
-            position: absolute;
-            width: 200px;
-            height: 150px;
-            animation: gentleBreathe 4s ease-in-out infinite;
-            transform-origin: bottom center;
-            z-index: 4;
-            transition: all 0.5s ease-in-out;
+            position: absolute; width: 200px; height: 220px; /* Taller area for the body */
+            animation: frogBreathe 4s ease-in-out infinite;
+            transform-origin: bottom center; z-index: 4;
         }
-
         .pos-in-bed { bottom: 105px; right: 220px; }
         .pos-at-desk { bottom: 115px; left: 10%; }
 
-        /* --- SOLID FROGGY HEAD & BASE --- */
-        .body-base {
-            width: 200px;
-            height: 150px;
-            background: #A3D977;
-            border-radius: 50%;
-            position: relative;
-            box-shadow: inset -10px -10px 0 rgba(0,0,0,0.06);
+        /* The Round Green Head */
+        .head-base {
+            width: 200px; height: 140px; background: #A3D977; border-radius: 50%; position: absolute; top: 0; left: 0; z-index: 2;
         }
-
-        /* --- FIXED MEASUREMENTS FOR FACE FEATURES --- */
-        .eye-left {
-            width: 55px;
-            height: 55px;
-            background: #A3D977;
-            border-radius: 50%;
-            position: absolute;
-            top: -15px;
-            left: 25px;
+        /* The Moving Green Body Torso */
+        .body-torso {
+            width: 140px; height: 110px; background: #A3D977; border-radius: 50% 50% 40% 40%;
+            position: absolute; bottom: 0; left: 30px; z-index: 1; box-shadow: inset -8px -8px 0 rgba(0,0,0,0.05);
         }
-        .eye-right {
-            width: 55px;
-            height: 55px;
-            background: #A3D977;
-            border-radius: 50%;
-            position: absolute;
-            top: -15px;
-            left: 120px;
-        }
-        
-        .eye-pupil {
-            width: 22px;
-            height: 22px;
-            background: #2C3E50;
-            border-radius: 50%;
-            position: absolute;
-            top: 16px;
-            left: 16px;
-        }
-        
-        .eye-pupil.asleep {
-            width: 24px;
-            height: 5px;
-            background: #2C3E50;
-            border-radius: 3px;
-            top: 26px;
-            left: 15px;
-        }
-
-        .blush-pink {
-            width: 24px;
-            height: 12px;
-            background: #FFB3BA;
-            border-radius: 50%;
-            position: absolute;
-            top: 70px;
-        }
-        .blush-pink.l { left: 25px; }
-        .blush-pink.r { left: 150px; }
-        
-        .happy-smile {
-            width: 40px;
-            height: 18px;
-            border-bottom: 5px solid #2C3E50;
-            border-radius: 0 0 20px 20px;
-            position: absolute;
-            top: 62px;
-            left: 80px;
-        }
-
-        #status-card {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.94);
-            padding: 14px 20px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            z-index: 10;
-        }
+        /* Tiny details */
+        .eye-left { width: 55px; height: 55px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; left: 25px; }
+        .eye-right { width: 55px; height: 55px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; left: 120px; }
+        .eye-pupil { width: 22px; height: 22px; background: #2C3E50; border-radius: 50%; position: absolute; top: 16px; left: 16px; }
+        .eye-pupil.asleep { width: 24px; height: 5px; background: #2C3E50; border-radius: 3px; top: 26px; left: 15px; }
+        .blush-pink { width: 24px; height: 12px; background: #FFB3BA; border-radius: 50%; position: absolute; top: 65px; }
+        .blush-pink.l { left: 25px; } .blush-pink.r { left: 150px; }
+        .happy-smile { width: 40px; height: 18px; border-bottom: 5px solid #2C3E50; border-radius: 0 0 20px 20px; position: absolute; top: 58px; left: 80px; }
+        #status-card { position: absolute; top: 20px; left: 20px; background: rgba(255, 255, 255, 0.94); padding: 14px 20px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); z-index: 10; }
     </style>
 </head>
 <body>
-
     <div id="status-card">
         <h3 style="margin: 0 0 4px 0; color: #2C3E50;">Froggy's Schedule</h3>
         <div id="activity-text">Syncing laptop clock...</div>
     </div>
-
     <div class="room-container">
-        <!-- Window Frame -->
         <div class="window-frame">
             <div class="window-cross-v"></div><div class="window-cross-h"></div>
             <div class="sky-star" style="top: 20%; left: 20%;"></div>
             <div class="sky-star" style="top: 50%; left: 75%;"></div>
             <div class="sky-star" style="top: 75%; left: 35%;"></div>
         </div>
-
         <div class="study-desk"><div class="laptop-device"></div></div>
-
-        <div class="bed-setup">
-            <div class="soft-pillow"></div>
-            <div class="warm-blanket"></div>
-        </div>
-
-        <!-- Froggy -->
+        <div class="bed-setup"><div class="soft-pillow"></div><div class="warm-blanket"></div></div>
         <div id="frog-actor" class="frog-character">
-            <div class="body-base">
+            <!-- Glued Head and Body Layout -->
+            <div class="head-base">
                 <div class="eye-left"><div class="eye-pupil" id="pupil-l"></div></div>
                 <div class="eye-right"><div class="eye-pupil" id="pupil-r"></div></div>
                 <div class="blush-pink l"></div><div class="blush-pink r"></div>
                 <div class="happy-smile"></div>
             </div>
+            <div class="body-torso"></div>
         </div>
     </div>
-
     <script>
         function runScheduleTracker() {
             const time = new Date();
@@ -289,6 +144,7 @@
             const win = document.querySelector('.window-frame');
             const stars = document.querySelectorAll('.sky-star');
 
+            // Clean previous placement states
             actor.className = "frog-character";
             pL.className = "eye-pupil";
             pR.className = "eye-pupil";
@@ -296,10 +152,6 @@
             stars.forEach(s => s.style.display = "none");
 
             if (mode === "sleep") {
-                document.body.style.background = "#233342"; 
-                win.style.background = "rgba(0,0,0,0.6)";
-                actor.classList.add("pos-in-bed");
-  if (mode === "sleep") {
                 document.body.style.background = "#233342"; 
                 win.style.background = "rgba(0,0,0,0.6)";
                 actor.classList.add("pos-in-bed");
