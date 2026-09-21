@@ -1,181 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Froggy's Cozy Life Tracker</title>
+    <title>Froggy Tracker</title>
     <style>
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            background: #233342; transition: background 1s ease;
-        }
-        .room-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .window-frame {
-            position: absolute; top: 12%; right: 15%; width: 150px; height: 180px;
-            background: rgba(0, 0, 0, 0.4); border: 8px solid #5d4037; border-radius: 4px; z-index: 1;
-        }
-        .window-cross-v { position: absolute; left: 50%; width: 4px; height: 100%; background: #5d4037; transform: translateX(-50%); }
-        .window-cross-h { position: absolute; top: 40%; width: 100%; height: 4px; background: #5d4037; }
-        .sky-star { position: absolute; background: white; border-radius: 50%; width: 4px; height: 4px; opacity: 0.8; }
-        .study-desk {
-            position: absolute; bottom: 5%; left: 8%; width: 240px; height: 110px;
-            background: #8d6e63; border-radius: 8px 8px 0 0; display: none; z-index: 2;
-        }
-        .laptop-device {
-            position: absolute; top: -26px; left: 85px; width: 70px; height: 26px;
-            background: #cfd8dc; border-radius: 4px 4px 0 0; border-bottom: 4px solid #90a4ae;
-        }
-        .bed-setup {
-            position: absolute; bottom: 5%; right: 8%; width: 420px; height: 160px;
-            background: #7e57c2; border-radius: 16px 16px 0 0; z-index: 2;
-        }
-        .soft-pillow {
-            position: absolute; top: -24px; left: 20px; width: 130px; height: 45px;
-            background: #ffffff; border-radius: 12px;
-        }
-        .warm-blanket {
-            position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 5;
-        }
-
-        /* --- NEW ANIMATION RULES FOR THE WHOLE MOVING BODY --- */
-        @keyframes frogBreathe {
-            0%, 100% { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.03) scaleY(0.97) translateY(3px); }
-        }
-        .frog-character {
-            position: absolute; width: 200px; height: 220px; /* Taller area for the body */
-            animation: frogBreathe 4s ease-in-out infinite;
-            transform-origin: bottom center; z-index: 4;
-        }
-        .pos-in-bed { bottom: 105px; right: 220px; }
-        .pos-at-desk { bottom: 115px; left: 10%; }
-
-        /* The Round Green Head */
-        .head-base {
-            width: 200px; height: 140px; background: #A3D977; border-radius: 50%; position: absolute; top: 0; left: 0; z-index: 2;
-        }
-        /* The Moving Green Body Torso */
-        .body-torso {
-            width: 140px; height: 110px; background: #A3D977; border-radius: 50% 50% 40% 40%;
-            position: absolute; bottom: 0; left: 30px; z-index: 1; box-shadow: inset -8px -8px 0 rgba(0,0,0,0.05);
-        }
-        /* Tiny details */
-        .eye-left { width: 55px; height: 55px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; left: 25px; }
-        .eye-right { width: 55px; height: 55px; background: #A3D977; border-radius: 50%; position: absolute; top: -15px; left: 120px; }
-        .eye-pupil { width: 22px; height: 22px; background: #2C3E50; border-radius: 50%; position: absolute; top: 16px; left: 16px; }
-        .eye-pupil.asleep { width: 24px; height: 5px; background: #2C3E50; border-radius: 3px; top: 26px; left: 15px; }
-        .blush-pink { width: 24px; height: 12px; background: #FFB3BA; border-radius: 50%; position: absolute; top: 65px; }
-        .blush-pink.l { left: 25px; } .blush-pink.r { left: 150px; }
-        .happy-smile { width: 40px; height: 18px; border-bottom: 5px solid #2C3E50; border-radius: 0 0 20px 20px; position: absolute; top: 58px; left: 80px; }
-        #status-card { position: absolute; top: 20px; left: 20px; background: rgba(255, 255, 255, 0.94); padding: 14px 20px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); z-index: 10; }
+        body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background:#233342;font-family:sans-serif;transition:1s;}
+        #box{position:absolute;top:20px;left:20px;background:#fff;padding:15px;border-radius:8px;}
+        #frog{position:relative;width:200px;height:200px;animation:b 3s infinite ease-in-out;}
+        .h{width:200px;height:140px;background:#A3D977;border-radius:50%;position:absolute;z-index:2;}
+        .b{width:130px;height:90px;background:#A3D977;border-radius:50%;position:absolute;bottom:0;left:35px;z-index:1;}
+        .e{width:50px;height:50px;background:#A3D977;border-radius:50%;position:absolute;top:-15px;}
+        .l{left:25px;}.r{left:125px;}
+        .p{width:20px;height:22px;background:#2C3E50;border-radius:50%;position:absolute;top:15px;left:15px;}
+        .p.s{width:24px;height:5px;border-radius:3px;top:25px;left:13px;}
+        .c{width:24px;height:12px;background:#FFB3BA;border-radius:50%;position:absolute;top:70px;}
+        .cl{left:25px;}.cr{left:150px;}
+        .m{width:40px;height:15px;border-bottom:5px solid #2C3E50;border-radius:0 0 20px 20px;position:absolute;top:65px;left:80px;}
+        @keyframes b{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(4px) scale(1.02);}}
     </style>
 </head>
 <body>
-    <div id="status-card">
-        <h3 style="margin: 0 0 4px 0; color: #2C3E50;">Froggy's Schedule</h3>
-        <div id="activity-text">Syncing laptop clock...</div>
-    </div>
-    <div class="room-container">
-        <div class="window-frame">
-            <div class="window-cross-v"></div><div class="window-cross-h"></div>
-            <div class="sky-star" style="top: 20%; left: 20%;"></div>
-            <div class="sky-star" style="top: 50%; left: 75%;"></div>
-            <div class="sky-star" style="top: 75%; left: 35%;"></div>
+    <div id="box"><h3 style="margin:0 0 5px 0;">Froggy's Schedule</h3><div id="txt">Syncing...</div></div>
+    <div id="frog">
+        <div class="h">
+            <div class="e l"><div class="p" id="pl"></div></div>
+            <div class="e r"><div class="p" id="pr"></div></div>
+            <div class="c cl"></div><div class="c cr"></div>
+            <div class="m"></div>
         </div>
-        <div class="study-desk"><div class="laptop-device"></div></div>
-        <div class="bed-setup"><div class="soft-pillow"></div><div class="warm-blanket"></div></div>
-        <div id="frog-actor" class="frog-character">
-            <!-- Glued Head and Body Layout -->
-            <div class="head-base">
-                <div class="eye-left"><div class="eye-pupil" id="pupil-l"></div></div>
-                <div class="eye-right"><div class="eye-pupil" id="pupil-r"></div></div>
-                <div class="blush-pink l"></div><div class="blush-pink r"></div>
-                <div class="happy-smile"></div>
-            </div>
-            <div class="body-torso"></div>
-        </div>
+        <div class="b"></div>
     </div>
     <script>
-        function runScheduleTracker() {
-            const time = new Date();
-            const mins = (time.getHours() * 60) + time.getMinutes();
-
-            let txt = "";
-            let mode = "sleep"; 
-
-            if (mins >= 360 && mins < 480) {          // 6:00 AM - 7:59 AM
-                txt = "🌅 Waking up and stretching... Good morning!";
-                mode = "bed-awake";
-            } else if (mins >= 480 && mins < 510) {   // 8:00 AM - 8:29 AM
-                txt = "🍳 Breakfast hour! Getting fueled up.";
-                mode = "work";
-            } else if (mins >= 510 && mins < 780) {   // 8:30 AM - 12:59 PM
-                txt = "📚 Working hard at school! Focus mode active.";
-                mode = "work";
-            } else if (mins >= 780 && mins < 840) {   // 1:00 PM - 1:59 PM
-                txt = "🥪 Lunch break! Taking a small recess.";
-                mode = "work";
-            } else if (mins >= 840 && mins < 900) {   // 2:00 PM - 2:59 PM
-                txt = "🚌 Riding the transit bus home! Beep beep.";
-                mode = "work";
-            } else if (mins >= 900 && mins < 960) {   // 3:00 PM - 3:59 PM
-                txt = "🐸 Free time! Winding down inside the room.";
-                mode = "work";
-            } else if (mins >= 960 && mins < 1110) {  // 4:00 PM - 6:29 PM
-                txt = "✍️ Homework time! Cranking out assignments.";
-                mode = "work";
-            } else if (mins >= 1110 && mins < 1140) { // 6:30 PM - 6:59 PM
-                txt = "🍲 Dinner time! Family mealtime.";
-                mode = "work";
-            } else if (mins >= 1140 && mins < 1260) { // 7:00 PM - 8:59 PM
-                txt = "🎨 Drawing sketches and unwinding...";
-                mode = "work";
-            } else {                                  // 9:00 PM - 5:59 AM
-                txt = "💤 Shhh... Froggy is fast asleep. Goodnight!";
-                mode = "sleep";
-            }
-
-            const actor = document.getElementById('frog-actor');
-            const pL = document.getElementById('pupil-l');
-            const pR = document.getElementById('pupil-r');
-            const table = document.querySelector('.study-desk');
-            const win = document.querySelector('.window-frame');
-            const stars = document.querySelectorAll('.sky-star');
-
-            // Clean previous placement states
-            actor.className = "frog-character";
-            pL.className = "eye-pupil";
-            pR.className = "eye-pupil";
-            table.style.display = "none";
-            stars.forEach(s => s.style.display = "none");
-
-            if (mode === "sleep") {
-                document.body.style.background = "#233342"; 
-                win.style.background = "rgba(0,0,0,0.6)";
-                actor.classList.add("pos-in-bed");
-                pL.classList.add("asleep");
-                pR.classList.add("asleep");
-                stars.forEach(s => s.style.display = "block");
-            } 
-            else if (mode === "bed-awake") {
-                document.body.style.background = "#fff176"; 
-                win.style.background = "#e0f7fa"; 
-                actor.classList.add("pos-in-bed");
-            } 
-            else if (mode === "work") {
-                document.body.style.background = "#AED6F1"; 
-                win.style.background = "#e0f7fa"; 
-                actor.classList.add("pos-at-desk");
-                table.style.display = "block";
-            }
-
-            document.getElementById('activity-text').innerHTML = txt;
+        function check(){
+            const m = (new Date().getHours()*60)+new Date().getMinutes();
+            let t="💤 Fast asleep...", s=true, bg="#233342";
+            if(m>=360&&m<480){t="🌅 Waking up...";s=false;bg="#fff176";}
+            else if(m>=480&&m<510){t="🍳 Breakfast time!";s=false;bg="#AED6F1";}
+            else if(m>=510&&m<780){t="📚 Studying hard at school!";s=false;bg="#AED6F1";}
+            else if(m>=780&&m<840){t="🥪 Lunch break!";s=false;bg="#AED6F1";}
+            else if(m>=840&&m<900){t="🚌 Riding the bus home!";s=false;bg="#AED6F1";}
+            else if(m>=900&&m<960){t="🐸 Free room time!";s=false;bg="#fff176";}
+            else if(m>=960&&m<1110){t="✍️ Homework focus!";s=false;bg="#fff176";}
+            else if(m>=1110&&m<1140){t="🍲 Dinner time!";s=false;bg="#233342";}
+            else if(m>=1140&&m<1260){t="🎨 Drawing cute sketches!";s=false;bg="#233342";}
+            document.body.style.background=bg;
+            document.getElementById("txt").innerHTML=t;
+            document.getElementById("pl").className=s?"p s":"p";
+            document.getElementById("pr").className=s?"p s":"p";
         }
-
-        runScheduleTracker();
-        setInterval(runScheduleTracker, 10000);
+        check();setInterval(check,10000);
     </script>
 </body>
 </html>
