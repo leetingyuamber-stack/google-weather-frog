@@ -15,7 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #2b3a4a; /* Safe dark blue night default */
+            background: #233342;
             transition: background 1s ease;
         }
 
@@ -28,7 +28,7 @@
             align-items: center;
         }
 
-        /* --- DETAILED BACKGROUND ROOM SCENERY --- */
+        /* --- ROOM SCENERY --- */
         .window-frame {
             position: absolute;
             top: 12%;
@@ -39,6 +39,7 @@
             border: 8px solid #5d4037;
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
             border-radius: 4px;
+            z-index: 1;
         }
         .window-cross-v { position: absolute; left: 50%; width: 4px; height: 100%; background: #5d4037; transform: translateX(-50%); }
         .window-cross-h { position: absolute; top: 40%; width: 100%; height: 4px; background: #5d4037; }
@@ -62,6 +63,7 @@
             border-radius: 8px 8px 0 0;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             display: none;
+            z-index: 2;
         }
         .laptop-device {
             position: absolute;
@@ -83,6 +85,7 @@
             background: #7e57c2;
             border-radius: 16px 16px 0 0;
             box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+            z-index: 2;
         }
         .soft-pillow {
             position: absolute;
@@ -105,10 +108,10 @@
             z-index: 5;
         }
 
-        /* --- PERMANENTLY GLUED FROGGY CHARACTER MODEL --- */
+        /* --- THE CHARACTER ANCHOR BOX --- */
         @keyframes gentleBreathe {
-            0%, 100 Tri-state { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.04) scaleY(0.96) translateY(2px); }
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.03) scaleY(0.97) translateY(2px); }
         }
         .frog-character {
             position: absolute;
@@ -116,33 +119,42 @@
             height: 150px;
             animation: gentleBreathe 4s ease-in-out infinite;
             transform-origin: bottom center;
-            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 4;
+            transition: all 0.5s ease-in-out;
         }
 
-        /* Safe Layout Coordinates */
-        .pos-in-bed { bottom: 105px; right: 220px; z-index: 3; }
-        .pos-at-desk { bottom: 115px; left: 10%; z-index: 4; }
+        .pos-in-bed { bottom: 105px; right: 220px; }
+        .pos-at-desk { bottom: 115px; left: 10%; }
 
+        /* --- SOLID FROGGY HEAD & BASE --- */
         .body-base {
-            width: 100%;
-            height: 100%;
+            width: 200px;
+            height: 150px;
             background: #A3D977;
             border-radius: 50%;
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: relative;
             box-shadow: inset -10px -10px 0 rgba(0,0,0,0.06);
         }
-        .eye-left, .eye-right {
+
+        /* --- FIXED MEASUREMENTS FOR FACE FEATURES --- */
+        .eye-left {
             width: 55px;
             height: 55px;
             background: #A3D977;
             border-radius: 50%;
             position: absolute;
             top: -15px;
+            left: 25px;
         }
-        .eye-left { left: 25px; }
-        .eye-right { right: 25px; }
+        .eye-right {
+            width: 55px;
+            height: 55px;
+            background: #A3D977;
+            border-radius: 50%;
+            position: absolute;
+            top: -15px;
+            left: 120px;
+        }
         
         .eye-pupil {
             width: 22px;
@@ -154,7 +166,6 @@
             left: 16px;
         }
         
-        /* Flattened Bedtime Closed Eyes */
         .eye-pupil.asleep {
             width: 24px;
             height: 5px;
@@ -173,7 +184,7 @@
             top: 70px;
         }
         .blush-pink.l { left: 25px; }
-        .blush-pink.r { right: 25px; }
+        .blush-pink.r { left: 150px; }
         
         .happy-smile {
             width: 40px;
@@ -205,7 +216,7 @@
     </div>
 
     <div class="room-container">
-        <!-- Window Layer -->
+        <!-- Window Frame -->
         <div class="window-frame">
             <div class="window-cross-v"></div><div class="window-cross-h"></div>
             <div class="sky-star" style="top: 20%; left: 20%;"></div>
@@ -213,20 +224,20 @@
             <div class="sky-star" style="top: 75%; left: 35%;"></div>
         </div>
 
-        <!-- Desk Furniture Piece -->
+        <!-- Desk -->
         <div class="study-desk"><div class="laptop-device"></div></div>
 
-        <!-- Bed Furniture Piece -->
+        <!-- Bed -->
         <div class="bed-setup">
             <div class="soft-pillow"></div>
             <div class="warm-blanket"></div>
         </div>
 
-        <!-- Glued Character Core -->
-        <div id="frog-actor" class="frog-character pos-in-bed">
-            <div class="eye-left"><div class="eye-pupil" id="pupil-l"></div></div>
-            <div class="eye-right"><div class="eye-pupil" id="pupil-r"></div></div>
+        <!-- Froggy -->
+        <div id="frog-actor" class="frog-character">
             <div class="body-base">
+                <div class="eye-left"><div class="eye-pupil" id="pupil-l"></div></div>
+                <div class="eye-right"><div class="eye-pupil" id="pupil-r"></div></div>
                 <div class="blush-pink l"></div><div class="blush-pink r"></div>
                 <div class="happy-smile"></div>
             </div>
@@ -239,9 +250,8 @@
             const mins = (time.getHours() * 60) + time.getMinutes();
 
             let txt = "";
-            let mode = "sleep"; // sleep, bed-awake, work
+            let mode = "sleep"; 
 
-            // --- TIMELINE CONTROLLER MAP ---
             if (mins >= 360 && mins < 480) {          // 6:00 AM - 7:59 AM
                 txt = "🌅 Waking up and stretching... Good morning!";
                 mode = "bed-awake";
@@ -274,7 +284,6 @@
                 mode = "sleep";
             }
 
-            // --- RENDER DOM STYLING LAYOUT ---
             const actor = document.getElementById('frog-actor');
             const pL = document.getElementById('pupil-l');
             const pR = document.getElementById('pupil-r');
@@ -282,12 +291,13 @@
             const stars = document.querySelectorAll('.sky-star');
             const win = document.querySelector('.window-frame');
 
-            // Reset setup states cleanly
             actor.className = "frog-character";
             pL.className = "eye-pupil";
             pR.className = "eye-pupil";
             table.style.display = "none";
             stars.forEach(s => s.style.display = "none");
-            win.style.background = "rgba(0,0,0,0.4)";
 
             if (mode === "sleep") {
+                document.body.style.background = "#233342"; 
+                win.style.background = "rgba(0,0,0,0.6)";
+                
