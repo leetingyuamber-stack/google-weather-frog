@@ -13,7 +13,6 @@
         }
         .room-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
         
-        /* Scenery */
         .window-frame {
             position: absolute; top: 12%; right: 15%; width: 150px; height: 180px;
             background: rgba(0, 0, 0, 0.4); border: 8px solid #5d4037; border-radius: 4px; z-index: 1;
@@ -22,11 +21,10 @@
         .window-cross-h { position: absolute; top: 40%; width: 100%; height: 4px; background: #5d4037; }
         .sky-star { position: absolute; background: white; border-radius: 50%; width: 4px; height: 4px; opacity: 0.8; }
         
-        /* --- FIXED DESK LAYER VALUE --- */
-        /* Increased z-index to 5 so it physically sits IN FRONT of the frog torso! */
+        /* Desk Layer forced to z-index: 10 so it overlays everything */
         .study-desk {
             position: absolute; bottom: 8%; left: 10%; width: 260px; height: 120px;
-            background: #8d6e63; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 5;
+            background: #8d6e63; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 10;
         }
         .laptop-device {
             position: absolute; top: -26px; left: 140px; width: 70px; height: 26px;
@@ -34,33 +32,33 @@
         }
         .textbook {
             position: absolute; top: -12px; left: 60px; width: 60px; height: 12px;
-            background: #85c1e9; border-radius: 3px; display: none; z-index: 10;
+            background: #85c1e9; border-radius: 3px; display: none; z-index: 11;
         }
         .book-page-l { position: absolute; top: 1px; left: 2px; width: 27px; height: 10px; background: #ffffff; border-radius: 2px 0 0 2px; border-right: 1px solid #d5dbdb; }
         .book-page-r { position: absolute; top: 1px; right: 2px; width: 27px; height: 10px; background: #ffffff; border-radius: 0 2px 2px 0; }
-        .breakfast-plate { position: absolute; top: -15px; left: 40px; width: 80px; height: 15px; background: #ffffff; border-radius: 50%; border-bottom: 3px solid #cfd8dc; z-index: 10; display: none; }
+        .breakfast-plate { position: absolute; top: -15px; left: 40px; width: 80px; height: 15px; background: #ffffff; border-radius: 50%; border-bottom: 3px solid #cfd8dc; z-index: 11; display: none; }
 
         .bed-setup {
             position: absolute; bottom: 8%; right: 10%; width: 420px; height: 160px;
             background: #7e57c2; border-radius: 16px 16px 0 0; box-shadow: 0 12px 24px rgba(0,0,0,0.2); z-index: 2;
         }
         .soft-pillow { position: absolute; top: -24px; left: 20px; width: 130px; height: 45px; background: #ffffff; border-radius: 12px; }
-        .warm-blanket { position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 6; } /* Adjusted for blanket overlay depth */
+        .warm-blanket { position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 6; }
 
-        /* --- FROG LAYER VALUE SLID DOWN --- */
-        /* Set z-index to 3 so his lower body tucks neatly behind the desk profile! */
         @keyframes gentleBreathe {
             0%, 100% { transform: scale(1) translateY(0); }
             50% { transform: scale(1.03) scaleY(0.97) translateY(2px); }
         }
+        
+        /* Frog lower z-index: 5 keeps him safely trapped behind the table lip */
         .frog-character {
             position: absolute; width: 200px; height: 220px;
             animation: gentleBreathe 4s ease-in-out infinite;
-            transform-origin: bottom center; z-index: 3;
-            transition: left 0.6s ease, right 0.6s ease, bottom 0.6s ease;
+            transform-origin: bottom center; z-index: 5;
+            transition: left 0.6s ease, bottom 0.6s ease;
         }
-        .pos-in-bed { bottom: 135px; left: calc(90% - 200px); z-index: 4; } /* Keeps him above pillow/bed frame sheets */
-        .pos-at-desk { bottom: 55px; left: 12%; } /* Shifted down slightly to tuck beneath table lip */
+        .pos-in-bed { bottom: 135px; left: calc(90% - 200px); z-index: 8; } 
+        .pos-at-desk { bottom: 45px; left: 12%; } 
 
         .body-base { width: 200px; height: 150px; background: #A3D977; border-radius: 50%; position: relative; box-shadow: inset -10px -10px 0 rgba(0,0,0,0.06); }
         .body-torso { width: 130px; height: 90px; background: #A3D977; border-radius: 50%; position: absolute; bottom: 0; left: 35px; z-index: 1; }
@@ -75,7 +73,7 @@
         #status-card {
             position: absolute; top: 20px; left: 20px;
             background: rgba(255, 255, 255, 0.96); padding: 16px 22px; border-radius: 14px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15); z-index: 10; min-width: 220px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15); z-index: 20; min-width: 220px;
         }
         #live-clock { font-size: 24px; font-weight: bold; color: #2C3E50; margin-bottom: 2px; }
         #live-date { font-size: 14px; font-weight: 600; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
@@ -98,16 +96,7 @@
             <div class="sky-star" style="top: 75%; left: 35%;"></div>
         </div>
 
-        <div class="study-desk">
-            <div class="laptop-device"></div>
-            <div class="textbook">
-                <div class="book-page-l"></div><div class="book-page-r"></div>
-            </div>
-            <div class="breakfast-plate"></div>
-        </div>
-
-        <div class="bed-setup"><div class="soft-pillow"></div><div class="warm-blanket"></div></div>
-
+        <!-- The elements order here keeps the desk visually layering over him -->
         <div id="frog-actor" class="frog-character">
             <div class="body-base">
                 <div class="eye-left"><div class="eye-pupil" id="pupil-l"></div></div>
@@ -117,6 +106,16 @@
             </div>
             <div class="body-torso"></div>
         </div>
+
+        <div class="study-desk">
+            <div class="laptop-device"></div>
+            <div class="textbook">
+                <div class="book-page-l"></div><div class="book-page-r"></div>
+            </div>
+            <div class="breakfast-plate"></div>
+        </div>
+
+        <div class="bed-setup"><div class="soft-pillow"></div><div class="warm-blanket"></div></div>
     </div>
     <script>
         function runScheduleTracker() {
@@ -183,8 +182,7 @@
             const laptop = document.querySelector('.laptop-device');
             const book = document.querySelector('.textbook');
 
-            // Reset engine setups cleanly
-            actor.className = "frog-character";
+            // Clean engine configurations
             pL.className = "eye-pupil";
             pR.className = "eye-pupil";
             stars.forEach(s => s.style.display = "none");
@@ -196,8 +194,9 @@
             if (mode === "sleep") {
                 document.body.style.background = "#233342"; 
                 win.style.background = "rgba(0,0,0,0.6)";
-                actor.classList.add("pos-in-bed");
-                actor.style.zIndex = "4"; // Keeps him above bed base sheets
+                actor.style.left = "calc(90% - 200px)";
+                actor.style.bottom = "135px";
+                actor.style.zIndex = "8"; // Stays over bed linen layers
                 pL.classList.add("asleep");
                 pR.classList.add("asleep");
                 stars.forEach(s => s.style.display = "block");
@@ -205,16 +204,17 @@
             else if (mode === "bed-awake") {
                 document.body.style.background = "#fff176"; 
                 win.style.background = "#e0f7fa"; 
-                actor.classList.add("pos-in-bed");
-                actor.style.zIndex = "4";
+                actor.style.left = "calc(90% - 200px)";
+                actor.style.bottom = "135px";
+                actor.style.zIndex = "8";
             } 
             else if (mode === "work") {
                 document.body.style.background = "#AED6F1"; 
                 win.style.background = "#e0f7fa"; 
-                actor.classList.add("pos-at-desk");
-                actor.style.zIndex = "3"; // Slides him behind the desk box layers
+                actor.style.left = "12%";
+                actor.style.bottom = "45px"; 
+                actor.style.zIndex = "5"; // Lower than desk z-index to lock him behind it!
                 
-                // Platter object items manager
                 if (foodType !== "none") {
                     plate.style.display = "block";
                     if (foodType === "pancake") {
@@ -237,7 +237,7 @@
         }
 
         runScheduleTracker();
-        setInterval(runScheduleTracker, 1000); // 1-second ticking cycles
+        setInterval(runScheduleTracker, 1000);
     </script>
 </body>
 </html>
