@@ -13,7 +13,6 @@
         }
         .room-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
         
-        /* Scenery permanent tracking fixes */
         .window-frame {
             position: absolute; top: 12%; right: 15%; width: 150px; height: 180px;
             background: rgba(0, 0, 0, 0.4); border: 8px solid #5d4037; border-radius: 4px; z-index: 1;
@@ -22,25 +21,34 @@
         .window-cross-h { position: absolute; top: 40%; width: 100%; height: 4px; background: #5d4037; }
         .sky-star { position: absolute; background: white; border-radius: 50%; width: 4px; height: 4px; opacity: 0.8; }
         
-        /* Study desk permanently locked visible to secure layout items */
         .study-desk {
             position: absolute; bottom: 8%; left: 10%; width: 260px; height: 120px;
-            background: #8d6e63; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            z-index: 2; transition: opacity 0.5s ease;
+            background: #8d6e63; border-radius: 8px 8px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 2;
         }
         
-        /* Laptop setup for school hours */
         .laptop-device {
             position: absolute; top: -26px; left: 140px; width: 70px; height: 26px;
-            background: #cfd8dc; border-radius: 4px 4px 0 0; border-bottom: 4px solid #90a4ae;
-            display: none;
+            background: #cfd8dc; border-radius: 4px 4px 0 0; border-bottom: 4px solid #90a4ae; display: none;
+        }
+
+        /* --- NEW DETAILED CUTE TEXTBOOK SHAPES --- */
+        .textbook {
+            position: absolute; top: -12px; left: 130px; width: 60px; height: 12px;
+            background: #85c1e9; border-radius: 3px; display: none; z-index: 10;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.15);
+        }
+        .book-page-l {
+            position: absolute; top: 1px; left: 2px; width: 27px; height: 10px;
+            background: #ffffff; border-radius: 2px 0 0 2px; border-right: 1px solid #d5dbdb;
+        }
+        .book-page-r {
+            position: absolute; top: 1px; right: 2px; width: 27px; height: 10px;
+            background: #ffffff; border-radius: 0 2px 2px 0;
         }
         
-        /* Transforming desktop dining plate slot */
         .breakfast-plate {
             position: absolute; top: -15px; left: 40px; width: 80px; height: 15px;
-            background: #ffffff; border-radius: 50%; border-bottom: 3px solid #cfd8dc; z-index: 10;
-            display: none;
+            background: #ffffff; border-radius: 50%; border-bottom: 3px solid #cfd8dc; z-index: 10; display: none;
         }
         .pancake { position: absolute; top: -8px; left: 15px; width: 50px; height: 10px; background: #f0b27a; border-radius: 50%; box-shadow: 0 2px 0 #d35400; }
         .butter { position: absolute; top: -12px; left: 35px; width: 12px; height: 6px; background: #f1c40f; border-radius: 2px; }
@@ -48,7 +56,6 @@
         .bed-setup {
             position: absolute; bottom: 8%; right: 10%; width: 420px; height: 160px;
             background: #7e57c2; border-radius: 16px 16px 0 0; box-shadow: 0 12px 24px rgba(0,0,0,0.2); z-index: 2;
-            transition: opacity 0.5s ease;
         }
         .soft-pillow { position: absolute; top: -24px; left: 20px; width: 130px; height: 45px; background: #ffffff; border-radius: 12px; }
         .warm-blanket { position: absolute; bottom: 0; width: 100%; height: 110px; background: #e57373; border-radius: 8px 8px 0 0; z-index: 5; }
@@ -104,6 +111,11 @@
 
         <div class="study-desk">
             <div class="laptop-device"></div>
+            <!-- Added the Textbook structure here -->
+            <div class="textbook">
+                <div class="book-page-l"></div>
+                <div class="book-page-r"></div>
+            </div>
             <div class="breakfast-plate">
                 <div class="pancake"></div>
                 <div class="butter"></div>
@@ -126,7 +138,7 @@
         function runScheduleTracker() {
             const time = new Date();
             
-            // 1. FORCES THE DYNAMIC CALENDAR CARD TO PRINT THE TIME, DATE, AND DAY
+            // Update Calendar Card Values
             const optionsDate = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
             document.getElementById('live-date').innerHTML = time.toLocaleDateString('en-US', optionsDate);
             document.getElementById('live-clock').innerHTML = time.toLocaleTimeString('en-US', { hour12: true });
@@ -136,8 +148,9 @@
             let mode = "sleep"; 
             let foodType = "none"; 
             let showLaptop = false;
+            let showBook = false; // Book tracker visibility slot
 
-            // --- THE TRANSFORMING ROUTINE & FOOD TIMELINE ---
+            // --- THE TRANSFORMING ROUTINE & OBJECT CONTROLLER ---
             if (mins >= 360 && mins < 480) {          // 6:00 AM - 7:59 AM
                 txt = "🌅 Waking up and stretching... Good morning!";
                 mode = "bed-awake";
@@ -148,7 +161,8 @@
             } else if (mins >= 510 && mins < 780) {   // 8:30 AM - 12:59 PM
                 txt = "📚 Working hard at school! Focus mode active.";
                 mode = "work";
-                showLaptop = true; // Opens laptop for class!
+                showLaptop = true; 
+                showBook = true; // Opens textbook for class!
             } else if (mins >= 780 && mins < 840) {   // 1:00 PM - 1:59 PM
                 txt = "🥪 Lunch break! Eating a fresh school sandwich.";
                 mode = "work";
@@ -162,7 +176,8 @@
             } else if (mins >= 960 && mins < 1110) {  // 4:00 PM - 6:29 PM
                 txt = "✍️ Homework time! Cranking out assignments.";
                 mode = "work";
-                showLaptop = true; // Homework device active!
+                showLaptop = true; 
+                showBook = true; // Opens textbook for studying!
             } else if (mins >= 1110 && mins < 1140) { // 6:30 PM - 6:59 PM
                 txt = "🍲 Dinner time! Sipping a hot bowl of soup.";
                 mode = "work";
@@ -183,15 +198,16 @@
             const stars = document.querySelectorAll('.sky-star');
             const plate = document.querySelector('.breakfast-plate');
             const laptop = document.querySelector('.laptop-device');
+            const book = document.querySelector('.textbook');
 
-            // Reset basic layout views safely
+            // Reset engine setups cleanly
             actor.className = "frog-character";
             pL.className = "eye-pupil";
             pR.className = "eye-pupil";
             stars.forEach(s => s.style.display = "none");
             laptop.style.display = showLaptop ? "block" : "none";
+            book.style.display = showBook ? "block" : "none"; // Textbook toggle
 
-            // Kept room fixtures permanently visible to prevent cutoff blank walls
             table.style.opacity = "1";
             table.style.display = "block";
 
@@ -213,7 +229,7 @@
                 win.style.background = "#e0f7fa"; 
                 actor.classList.add("pos-at-desk");
                 
-                // Magical transforming plate controller
+                // Plate content manager
                 if (foodType !== "none") {
                     plate.style.display = "block";
                     if (foodType === "pancake") {
@@ -235,7 +251,6 @@
             document.getElementById('activity-text').innerHTML = txt;
         }
 
-        // Run instantly and refresh every 1 second so the clock ticks smoothly
         runScheduleTracker();
         setInterval(runScheduleTracker, 1000);
     </script>
